@@ -1,0 +1,10 @@
+db/*.sqlite3
+.svn
+.settings
+.project
+.buildpath
+nbproject
+*.cache
+*.log
+*.pid
+test
