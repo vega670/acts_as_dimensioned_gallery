@@ -4,10 +4,8 @@ class Gallery < ActiveRecord::Base
   has_many :images, :dependent => :destroy
   belongs_to :holder, :polymorphic => true
   
-  @@galleries_path = "galleries"
-  
   def self.path
-    return @@galleries_path
+    return "galleries"
   end
   
   def create_dimension(dimension)

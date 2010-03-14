@@ -1,0 +1,5 @@
+1. Create Rake task to initialize gallery directories.
+2. Allow user to set storage path.
+3. Include routes generator.
+4. Include migration generator.
+5. Include generators for all models, controllers, and views to avoid any name collisions.

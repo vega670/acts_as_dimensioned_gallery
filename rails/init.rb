@@ -1,2 +1,2 @@
 # Include hook code here
-require 'acts_as_dimensioned_gallery'
+require 'dimensioned_gallery'

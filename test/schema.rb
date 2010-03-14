@@ -14,5 +14,38 @@ ActiveRecord::Schema.define(:version => 0) do
     t.string :url_text
     t.boolean :links
   end
-  
+
+  create_table :galleries, :force => true do |t|
+    t.string :name
+    t.text :description
+    t.references :holder, :polymorphic => true
+    t.integer :gallery_image_id
+    t.timestamps
+  end
+
+  create_table :dimensions, :force => true do |t|
+    t.string :name
+    t.string :content_type
+    t.integer :width
+    t.integer :height
+    t.float :aspect
+    t.boolean :crop
+    t.boolean :resize
+    t.timestamps
+  end
+
+  create_table :gdjoins, :id => false, :force => true do |t|
+    t.references :gallery
+    t.references :dimension
+  end
+
+  create_table :images, :force => true do |t|
+    t.string :name
+    t.text :description
+    t.string :original_filename
+    t.integer :height
+    t.integer :width
+    t.references :gallery
+    t.timestamps
+  end
 end

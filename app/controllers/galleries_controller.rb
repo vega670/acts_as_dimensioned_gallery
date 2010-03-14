@@ -74,6 +74,10 @@ class GalleriesController < ApplicationController
     
     render :text => 'Image set as gallery image.'
   end
+
+  def path
+    return Gallery.path
+  end
   
   private
     def find_holder

@@ -8,11 +8,96 @@ time and will retroactively apply all dimensions to previously uploaded images
 as well as all new images. Dimensions can be managed as gallery-specific or
 independently and existing dimensions can be added to any gallery.
 
+Usage
+=====
+
+To use the plugin, first you will need to add four tables to your database, configured
+as follows (example for MySQL):
+
+CREATE TABLE `galleries` (
+    `id` INT(11) NOT NULL auto_increment,
+    `name` VARCHAR(255) default NULL,
+    `description` TEXT default NULL,
+    `holder_id` INT(11) default NULL,
+    `holder_type` VARCHAR(255) default NULL,
+    `gallery_image_id` INT(11) default NULL,
+    `created_at` DATETIME default NULL,
+    `updated_at` DATETIME default NULL,
+    PRIMARY KEY (`id`)
+)ENGINE = INNODB;
+
+CREATE TABLE `images` (
+    `id` INT(11) NOT NULL auto_increment,
+    `name` VARCHAR(255) default NULL,
+    `description` TEXT default NULL,
+    `original_filename` VARCHAR(255) default NULL,
+    `height` INT(11) default NULL,
+    `width` INT(11) default NULL,
+    `gallery_id` INT(11) default NULL,
+    `created_at` DATETIME default NULL,
+    `updated_at` DATETIME default NULL,
+    PRIMARY KEY (`id`)
+)ENGINE = INNODB;
+
+CREATE TABLE `dimensions` (
+    `id` INT(11) NOT NULL auto_increment,
+    `name` VARCHAR(255) default NULL,
+    `content_type` VARCHAR(255) default NULL,
+    `height` INT(11) default NULL,
+    `width` INT(11) default NULL,
+    `aspect` FLOAT default NULL,
+    `crop` TINYINT(1) default NULL,
+    `resize` TINYINT(1) default NULL,
+    `created_at` DATETIME default NULL,
+    `updated_at` DATETIME default NULL,
+    PRIMARY KEY (`id`)
+)ENGINE = INNODB;
+
+CREATE TABLE `gdjoins` (
+    `id` INT(11) NOT NULL auto_increment,
+    `gallery_id` INT(11) default NULL,
+    `dimension_id` INT(11) default NULL,
+    PRIMARY KEY (`id`)
+)ENGINE = INNODB;
+
+Next, in all models you want to add galleries to, you must call
+acts_as_dimensioned_gallery.
+
+Next, you must add a directory named 'galleries' in the public directory of
+your Rails app.
+
+Finally, you must configure the routes in config/routes.rb if you want to use
+the included management views.
 
 Example
 =======
 
-Example goes here.
+:::Item.rb:::
+
+class Item < ActiveRecord::Base
+    acts_as_dimensioned_gallery
+end
+
+
+Example of nested galleries:
+
+:::config/routes.rb:::
+
+map.resources :items, :has_many => :galleries
+map.resources :galleries do |gallery|
+  gallery.resources :dimensions
+  gallery.resources :images
+end
+
+
+Example of non-nested galleries:
+
+:::config/routes.rb:::
+
+map.resources :galleries do |gallery|
+  gallery.resources :dimensions
+  gallery.resources :images
+end
 
 
 Copyright (c) 2010 Matthew R. Dale, released under the MIT license
