@@ -7,4 +7,5 @@ nbproject
 *.cache
 *.log
 *.pid
-test
+database.yml
+generators

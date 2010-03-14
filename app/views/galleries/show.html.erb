@@ -1,0 +1,30 @@
+<div id="gallery">
+	<h1><%= @gallery.name %></h1>
+	<h3><%= @gallery.description %></h3>
+	<br />
+	<% if @holder %>
+		<%= link_to 'Back', @holder %>
+	<% else %>
+		<%= link_to 'back', galleries_path %>
+	<% end %>
+	
+	<h2>Dimensions</h2>
+	<div id="dimensions">
+		<%= render :partial => 'dimensions/list' %>
+	</div>
+	
+	<h2>Images</h2>
+	<div class="images">
+		<% @gallery.images.each do |image| %>
+			Name: <%= image.name %><br />
+			<% @gallery.dimensions.each do |dim| %>
+				<%= image_tag(dim.name, image, @gallery) %>
+			<% end %>
+			<%= link_to 'Show', gallery_image_path(@gallery, image) %> |
+			<%= link_to 'Edit', edit_gallery_image_path(@gallery, image) %> |
+			<%= link_to 'Delete', gallery_image_path(@gallery, image), :confirm => "Are you sure?", :method => :delete %><br />
+			<br />
+		<% end %>
+		<%= link_to 'New image', new_gallery_image_path(@gallery) %>
+	</div>
+</div>

@@ -1,0 +1,14 @@
+<% @gallery.dimensions.each do |dim| %>
+	Name: <%= dim.name %><br />
+	Content: <%= dim.content_type %><br />
+	Width: <%= dim.width %><br />
+	Height: <%= dim.height %><br />
+	Aspect: <%= dim.aspect %><br />
+	Crop: <%= dim.crop %><br />
+	Resize: <%= dim.resize %><br />
+	<%= link_to 'Edit', edit_gallery_dimension_path(@gallery, dim) %> |
+	<%= link_to( 'Remove', { :controller => :dimensions, :action => :remove, :gallery_id => @gallery.id, :dimension_id => dim.id}) %> |
+	<%= link_to 'Delete', gallery_dimension_path(@gallery, dim), :confirm => "This will delete the dimension. Are you sure this is what you want to do?", :method => :delete %>
+	<br />
+<% end %>
+<%= link_to 'New dimension', new_gallery_dimension_path(@gallery) %><br />

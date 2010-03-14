@@ -1,0 +1,36 @@
+<% form_for([@gallery, @dimension]) do |f| %>
+<p>
+	<%= f.error_messages %>
+</p>
+<p>
+	<%= f.label :name %>
+	<%= f.text_field :name %>
+</p>
+<p>
+	<%= f.label :content_type %>
+	<%= f.text_field :content_type %>
+</p>
+<p>
+	<%= f.label :width %>
+	<%= f.text_field :width %>
+</p>
+<p>
+	<%= f.label :height %>
+	<%= f.text_field :height %>
+</p>
+<p>
+	<%= f.label 'Aspect ratio' %>
+	<%= f.text_field :aspect %>
+</p>
+<p>
+	<%= f.label :resize? %>
+	<%= f.check_box :resize %>
+</p>
+<p>
+	<%= f.label :crop? %>
+	<%= f.check_box :crop %>
+</p>
+<p>
+	<%= f.submit 'Save' %>
+</p>
+<% end %>

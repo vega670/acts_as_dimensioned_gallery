@@ -1,0 +1,13 @@
+<h1>New dimension</h1>
+
+<h2>
+	Add existing: 
+	<% form_for([@gallery, @dimension]) do %>
+		<%= collection_select(:dimension, :id, @dimensions, :id, :name) %>
+		<%= submit_tag 'Select' %>
+	<% end %>
+</h2>
+
+<%= render :partial => "form" %>
+
+<%= link_to 'Back', gallery_path(@gallery) %>
