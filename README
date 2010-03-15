@@ -66,7 +66,7 @@ acts_as_dimensioned_gallery.
 your Rails app.
 
 4. If you have not already, install the Image Magick application
-(http://www.imagemagick.org/script/index.php). In config/environment.rb inside
+( http://www.imagemagick.org/ ). In config/environment.rb inside
 the 'Rails::Initializer.run do |config|' block, add
 'IMAGE_MAGICK_PATH = "/path/to/image/magick"' (the path will usually be
 '/usr/bin' on Linux or something like 'C:\Program Files\ImageMagick' on Windows).
