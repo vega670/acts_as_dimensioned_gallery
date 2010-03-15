@@ -27,7 +27,7 @@ CREATE TABLE `galleries` (
     `created_at` DATETIME default NULL,
     `updated_at` DATETIME default NULL,
     PRIMARY KEY (`id`)
-)ENGINE = INNODB;
+);
 
 CREATE TABLE `images` (
     `id` INT(11) NOT NULL auto_increment,
@@ -40,7 +40,7 @@ CREATE TABLE `images` (
     `created_at` DATETIME default NULL,
     `updated_at` DATETIME default NULL,
     PRIMARY KEY (`id`)
-)ENGINE = INNODB;
+);
 
 CREATE TABLE `dimensions` (
     `id` INT(11) NOT NULL auto_increment,
@@ -53,14 +53,14 @@ CREATE TABLE `dimensions` (
     `created_at` DATETIME default NULL,
     `updated_at` DATETIME default NULL,
     PRIMARY KEY (`id`)
-)ENGINE = INNODB;
+);
 
 CREATE TABLE `gdjoins` (
     `id` INT(11) NOT NULL auto_increment,
     `gallery_id` INT(11) default NULL,
     `dimension_id` INT(11) default NULL,
     PRIMARY KEY (`id`)
-)ENGINE = INNODB;
+);
 
 2. In all models you want to add galleries to, call
 acts_as_dimensioned_gallery.
