@@ -69,8 +69,7 @@ acts_as_dimensioned_gallery.
 your Rails app.
 
 4. If you have not already, install the Image Magick application
-( http://www.imagemagick.org/ ). In config/environment.rb inside
-the 'Rails::Initializer.run do |config|' block, add
+( http://www.imagemagick.org/ ). In config/environment.rb, add
 'IMAGE_MAGICK_PATH = "/path/to/image/magick"' (the path will usually be
 '/usr/bin' on Linux or something like 'C:\Program Files\ImageMagick' on Windows).
 
@@ -90,14 +89,9 @@ end
 
 
 :::config/environment.rb::::::
+...add...
 
-RAILS_GEM_VERSION = '2.3.4' unless defined? RAILS_GEM_VERSION
-require File.join(File.dirname(__FILE__), 'boot')
-
-Rails::Initializer.run do |config|
-  IMAGE_MAGICK_PATH = "/usr/bin"
-  config.time_zone = 'UTC'
-end
+IMAGE_MAGICK_PATH = "/usr/bin"
 
 :::::::::::::::::::::::::::::
 
@@ -105,6 +99,7 @@ end
 Example of nested galleries url (myurl.com/mymodel/1/galleries):
 
 :::config/routes.rb::::::::::
+...add...
 
 map.resources :items, :has_many => :galleries
 map.resources :galleries do |gallery|
@@ -118,6 +113,7 @@ end
 Example of non-nested galleries (myurl.com/galleries):
 
 :::config/routes.rb::::::::::
+...add...
 
 map.resources :galleries do |gallery|
   gallery.resources :dimensions
