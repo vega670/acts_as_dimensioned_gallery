@@ -8,6 +8,9 @@ time and will retroactively apply all dimensions to previously uploaded images
 as well as all new images. Dimensions can be managed as gallery-specific or
 independently and existing dimensions can be added to any gallery.
 
+!!!WARNING!!! ActsAsDimensionedGallery currently has a number of bugs and very
+              basic views. Use with caution.
+
 Usage
 =====
 
