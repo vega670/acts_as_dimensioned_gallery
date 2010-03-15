@@ -1,7 +1,7 @@
 <h1><%= @image.name %></h1>
 
 <% @gallery.dimensions.each do |dim| %>
-	<%= @image.tag(dim.name, @gallery) %>
+	<%= "#{dim.name}: #{@image.tag(dim.name)}" %><br />
 <% end %>
 
 <div id="set_gallery_image">

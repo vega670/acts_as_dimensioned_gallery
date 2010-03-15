@@ -11,9 +11,9 @@ independently and existing dimensions can be added to any gallery.
 Usage
 =====
 
-To use the plugin, first you will need to add four tables to your database, configured
-as follows (example for MySQL):
+Follow these steps to install and configure the plugin:
 
+1. Create the four required tables in your database. This is MySQL example code.
 CREATE TABLE `galleries` (
     `id` INT(11) NOT NULL auto_increment,
     `name` VARCHAR(255) default NULL,
@@ -42,7 +42,6 @@ CREATE TABLE `images` (
 CREATE TABLE `dimensions` (
     `id` INT(11) NOT NULL auto_increment,
     `name` VARCHAR(255) default NULL,
-    `content_type` VARCHAR(255) default NULL,
     `height` INT(11) default NULL,
     `width` INT(11) default NULL,
     `aspect` FLOAT default NULL,
@@ -60,28 +59,49 @@ CREATE TABLE `gdjoins` (
     PRIMARY KEY (`id`)
 )ENGINE = INNODB;
 
-Next, in all models you want to add galleries to, you must call
+2. In all models you want to add galleries to, call
 acts_as_dimensioned_gallery.
 
-Next, you must add a directory named 'galleries' in the public directory of
+3. Add a directory named 'galleries' in the 'public' directory of
 your Rails app.
 
-Finally, you must configure the routes in config/routes.rb if you want to use
+4. If you have not already, install the Image Magick application
+(http://www.imagemagick.org/script/index.php). In config/environment.rb inside
+the 'Rails::Initializer.run do |config|' block, add
+'IMAGE_MAGICK_PATH = "/path/to/image/magick"' (the path will usually be
+'/usr/bin' on Linux or something like 'C:\Program Files\ImageMagick' on Windows).
+
+5. Configure the routes in config/routes.rb if you want to use
 the included management views.
 
 Example
 =======
 
-:::Item.rb:::
+:::Item.rb::::::::::::::::::::
 
 class Item < ActiveRecord::Base
     acts_as_dimensioned_gallery
 end
 
+::::::::::::::::::::::::::::::
 
-Example of nested galleries:
 
-:::config/routes.rb:::
+:::config/environment.rb::::::
+
+RAILS_GEM_VERSION = '2.3.4' unless defined? RAILS_GEM_VERSION
+require File.join(File.dirname(__FILE__), 'boot')
+
+Rails::Initializer.run do |config|
+  IMAGE_MAGICK_PATH = "/usr/bin"
+  config.time_zone = 'UTC'
+end
+
+:::::::::::::::::::::::::::::
+
+
+Example of nested galleries url (myurl.com/mymodel/1/galleries):
+
+:::config/routes.rb::::::::::
 
 map.resources :items, :has_many => :galleries
 map.resources :galleries do |gallery|
@@ -89,15 +109,19 @@ map.resources :galleries do |gallery|
   gallery.resources :images
 end
 
+:::::::::::::::::::::::::::::
 
-Example of non-nested galleries:
 
-:::config/routes.rb:::
+Example of non-nested galleries (myurl.com/galleries):
+
+:::config/routes.rb::::::::::
 
 map.resources :galleries do |gallery|
   gallery.resources :dimensions
   gallery.resources :images
 end
+
+:::::::::::::::::::::::::::::
 
 
 Copyright (c) 2010 Matthew R. Dale, released under the MIT license

@@ -25,7 +25,6 @@ ActiveRecord::Schema.define(:version => 0) do
 
   create_table :dimensions, :force => true do |t|
     t.string :name
-    t.string :content_type
     t.integer :width
     t.integer :height
     t.float :aspect

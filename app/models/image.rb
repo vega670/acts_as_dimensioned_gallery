@@ -54,10 +54,9 @@ class Image < ActiveRecord::Base
     FileUtils.cp(temp_path, original_path)
     
     dims = gallery.dimensions
-    dims.delete_if { |a| a.content_type != 'image' }
     
     dims.each do |dim|
-      create_with_dimension(dim, gallery, temp_path, true)
+      self.create_with_dimension(dim)
     end
   end
   
@@ -66,18 +65,14 @@ class Image < ActiveRecord::Base
     FileUtils.remove_entry_secure(base_path)
   end
   
-  def create_with_dimension(dimension, gallery = nil, src_path = nil)
-    if !gallery
-      gallery = Gallery.find(self.gallery_id)
-    end
+  def create_with_dimension(dimension)
+    gallery = Gallery.find(self.gallery_id)
     
     base_path = "#{self.root_path}/#{gallery.holder_type.downcase}/#{gallery.id.to_s}/#{self.id.to_s}"
     dim_name = dimension.name.gsub(/[\s]/,"_").gsub(/[\W]/,"").downcase
     dest_path = "#{base_path}/#{dim_name}.jpg"
     
-    if !src_path
-      src_path = "#{base_path}/original.jpg"
-    end
+    src_path = "#{base_path}/original.jpg"
     
     FileUtils.cp(src_path, dest_path)
     
@@ -134,10 +129,8 @@ class Image < ActiveRecord::Base
     end
   end
   
-  def destroy_with_dimension(dimension, gallery = nil)
-    if !gallery
-      gallery = Gallery.find(self.id)
-    end
+  def destroy_with_dimension(dimension)
+    gallery = Gallery.find(self.id)
     
     base_path = "#{self.root_path}/#{gallery.holder_type.downcase}/#{gallery.id.to_s}/#{self.id.to_s}"
     dim_name = dimension.name.gsub(/[\s]/,"_").gsub(/[\W]/,"").downcase
@@ -146,10 +139,8 @@ class Image < ActiveRecord::Base
     FileUtils.rm(dest_path)
   end
   
-  def tag(dim_name, gallery = nil)
-    if !gallery
-      gallery = Gallery.find(self.gallery_id)
-    end
+  def tag(dim_name)
+    gallery = Gallery.find(self.gallery_id)
     
     image_path = self.src(dim_name, gallery)
     return "<img src=\"#{image_path}\" alt=\"#{self.name}\" />"

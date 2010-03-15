@@ -18,7 +18,7 @@
 		<% @gallery.images.each do |image| %>
 			Name: <%= image.name %><br />
 			<% @gallery.dimensions.each do |dim| %>
-				<%= image_tag(dim.name, image, @gallery) %>
+				<%= image.tag(dim.name) %>
 			<% end %>
 			<%= link_to 'Show', gallery_image_path(@gallery, image) %> |
 			<%= link_to 'Edit', edit_gallery_image_path(@gallery, image) %> |
