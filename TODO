@@ -1,4 +1,4 @@
-1. Create Rake task to initialize gallery directories.
+1. Create Rake task to initialize gallery directory.
 2. Allow user to set storage path.
 3. Include routes generator.
 4. Include migration generator.
