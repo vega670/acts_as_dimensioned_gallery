@@ -96,7 +96,7 @@ IMAGE_MAGICK_PATH = "/usr/bin"
 :::::::::::::::::::::::::::::
 
 
-Example of nested galleries url (myurl.com/mymodel/1/galleries):
+Example of nested galleries (myurl.com/items/1/galleries):
 
 :::config/routes.rb::::::::::
 ...add...
