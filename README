@@ -76,30 +76,31 @@ your Rails app.
 5. Configure the routes in config/routes.rb if you want to use
 the included management views.
 
+
 Example
 =======
 
-:::Item.rb::::::::::::::::::::
+## Item.rb ###################
 
 class Item < ActiveRecord::Base
     acts_as_dimensioned_gallery
 end
 
-::::::::::::::::::::::::::::::
+##############################
 
 
-:::config/environment.rb::::::
-...add...
+## config/environment.rb #####
+add:
 
 IMAGE_MAGICK_PATH = "/usr/bin"
 
-:::::::::::::::::::::::::::::
+##############################
 
 
 Example of nested galleries (myurl.com/items/1/galleries):
 
-:::config/routes.rb::::::::::
-...add...
+## config/routes.rb ##########
+add:
 
 map.resources :items, :has_many => :galleries
 map.resources :galleries do |gallery|
@@ -107,20 +108,20 @@ map.resources :galleries do |gallery|
   gallery.resources :images
 end
 
-:::::::::::::::::::::::::::::
+##############################
 
 
 Example of non-nested galleries (myurl.com/galleries):
 
-:::config/routes.rb::::::::::
-...add...
+## config/routes.rb ##########
+add:
 
 map.resources :galleries do |gallery|
   gallery.resources :dimensions
   gallery.resources :images
 end
 
-:::::::::::::::::::::::::::::
+##############################
 
 
 Copyright (c) 2010 Matthew R. Dale, released under the MIT license
