@@ -17,13 +17,13 @@ class Gallery < ActiveRecord::Base
    end
  end
   
-  def create_dimension(dimension)
+  def add_dimension(dimension)
     self.images.each do |image|
       image.create_with_dimension(dimension)
     end
   end
   
-  def destroy_dimension(dimension)
+  def remove_dimension(dimension)
     self.images.each do |image|
       image.destroy_with_dimension(dimension)
     end

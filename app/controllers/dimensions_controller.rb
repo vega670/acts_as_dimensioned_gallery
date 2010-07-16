@@ -42,7 +42,7 @@ class DimensionsController < ApplicationController
         end
       end
     end
-    @gallery.create_dimension(dimension)
+    @gallery.add_dimension(dimension)
   end
   
   def destroy
@@ -68,16 +68,15 @@ class DimensionsController < ApplicationController
     dimension = Dimension.find(params[:dimension_id])
     
     if @gallery
-      @gallery = Gallery.find(params[:gallery_id])
       dimension.galleries.delete(@gallery)
       
-      @gallery.destroy_dimension(dimension)
+      @gallery.remove_dimension(dimension)
     else
       galleries = dimension.galleries
       dimension.galleries.delete_all
       
       galleries.each do |gallery|
-        gallery.destroy_dimension(dimension)
+        gallery.remove_dimension(dimension)
       end
     end
     

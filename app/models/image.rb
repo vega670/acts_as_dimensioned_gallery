@@ -130,7 +130,7 @@ class Image < ActiveRecord::Base
   end
   
   def destroy_with_dimension(dimension)
-    gallery = Gallery.find(self.id)
+    gallery = Gallery.find(self.gallery_id)
     
     base_path = "#{self.root_path}/#{gallery.holder_type.downcase}/#{gallery.id.to_s}/#{self.id.to_s}"
     dim_name = dimension.name.gsub(/[\s]/,"_").gsub(/[\W]/,"").downcase

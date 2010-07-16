@@ -15,6 +15,7 @@ class GalleriesController < ApplicationController
     end
   end
 
+
   def show
     @gallery = Gallery.find(params[:id])
     
@@ -22,6 +23,7 @@ class GalleriesController < ApplicationController
       format.html
     end
   end
+
 
   def new
     if @holder
@@ -35,6 +37,7 @@ class GalleriesController < ApplicationController
     end
   end
 
+
   def edit
     @gallery = Gallery.find(params[:id])
     
@@ -43,12 +46,13 @@ class GalleriesController < ApplicationController
     end
   end
 
+
   def create
     if @holder
-      @holder.galleries.create(params[:gallery])
+      gallery = @holder.galleries.create(params[:gallery])
       
       respond_to do |format|
-        format.html { redirect_to :controller => @holder.class.to_s.pluralize.downcase, :action => :show, :id => @holder.id }
+        format.html { redirect_to gallery_path(gallery) }
       end
     else
       @gallery = Gallery.create(params[:gallery])
@@ -59,14 +63,29 @@ class GalleriesController < ApplicationController
     end
   end
 
+
   def update
     
   end
 
+
   def destroy
-    
+    gallery = Gallery.find(params[:id])
+    gallery.destroy
+
+    respond_to do |format|
+
+      if @holder
+        format.html { redirect_to :controller => @holder.class.to_s.pluralize.downcase, :action => :show, :id => @holder.id }
+      else
+        format.html { redirect_to galleries_path }
+      end
+
+    end
   end
-  
+
+
+
   def js_set_gallery_image
     gallery = Gallery.find(params[:gallery_id])
     gallery.gallery_image_id = params[:image_id]
@@ -75,9 +94,11 @@ class GalleriesController < ApplicationController
     render :text => 'Image set as gallery image.'
   end
 
+
   def path
     return Gallery.path
   end
+
   
   private
     def find_holder
