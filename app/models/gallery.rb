@@ -3,9 +3,31 @@ class Gallery < ActiveRecord::Base
   has_many :dimensions, :through => :gdjoins
   has_many :images, :dependent => :destroy
   belongs_to :holder, :polymorphic => true
-  
-  def self.path
+
+  def after_save
+    base_path = "#{Gallery.absolute_path}/#{self.holder}/#{self.id.to_s}"
+    FileUtils.mkdir_p(base_path)
+  end
+
+  def after_destroy
+    base_path = "#{Gallery.absolute_path}/#{self.holder}/#{self.id.to_s}"
+    FileUtils.remove_entry_secure(base_path)
+  end
+
+  def self.dirname
     return "galleries"
+  end
+
+  def self.absolute_path
+    return "#{RAILS_ROOT}/public#{relative_path}"
+  end
+
+  def self.relative_path
+    return "/#{self.dirname}"
+  end
+
+  def holder
+    return self.holder_type.pluralize.downcase
   end
 
   def gallery_image_tag(dim_name)
@@ -16,16 +38,4 @@ class Gallery < ActiveRecord::Base
      return nil
    end
  end
-  
-  def add_dimension(dimension)
-    self.images.each do |image|
-      image.create_with_dimension(dimension)
-    end
-  end
-  
-  def remove_dimension(dimension)
-    self.images.each do |image|
-      image.destroy_with_dimension(dimension)
-    end
-  end
 end

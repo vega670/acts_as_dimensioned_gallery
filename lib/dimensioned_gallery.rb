@@ -15,6 +15,7 @@ module ActiveRecord
           end
           send :include, InstanceMethods
         end
+        
       end
 
       module InstanceMethods

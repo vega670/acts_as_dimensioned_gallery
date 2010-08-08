@@ -1,4 +1,4 @@
-class ImagesController < ApplicationController
+class ImagesController < AadgController
   layout 'application'
   
   before_filter :find_gallery

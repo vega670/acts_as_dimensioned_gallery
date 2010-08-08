@@ -1,4 +1,14 @@
-<% form_for([@gallery, @dimension]) do |f| %>
+<% if @gallery %>
+  <h2>Add existing:</h2>
+  <% form_for([@holder, @gallery, @dimension]) do %>
+    <%= collection_select(:dimension, :id, @dimensions, :id, :name) %>
+    <%= submit_tag 'Select' %>
+  <% end %>
+  <br />
+  <h2>Add new:</h2>
+<% end %>
+
+<% form_for([@holder, @gallery, @dimension]) do |f| %>
 <p>
 	<%= f.error_messages %>
 </p>

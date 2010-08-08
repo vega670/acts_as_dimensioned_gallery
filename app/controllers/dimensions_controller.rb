@@ -1,5 +1,7 @@
-class DimensionsController < ApplicationController
+class DimensionsController < AadgController
   layout 'application'
+
+  helper :galleries
   
   before_filter :find_gallery
   
@@ -11,89 +13,112 @@ class DimensionsController < ApplicationController
     end
   end
   
+  
   def new
-    @dimensions = Dimension.all
-    @dimension = @gallery.dimensions.build
+    if @gallery
+      @dimensions = Dimension.all
+      @dimension = @gallery.dimensions.build
+    else
+      @dimension = Dimension.new
+    end
     
     respond_to do |format|
       format.html
     end
   end
+
   
   def create
-    if params[:dimension][:id]
-      dimension = Dimension.find(params[:dimension][:id])
-      @gallery.dimensions << dimension
-      
-      respond_to do |format|
-        format.html { redirect_to gallery_path(@gallery) }
+    if @gallery
+      if params[:dimension][:id]
+        dimension = Dimension.find(params[:dimension][:id])
+        gdjoin = Gdjoin.find(:all, :conditions => "gallery_id = #{@gallery.id} AND dimension_id = #{dimension.id}")
+
+        respond_to do |format|
+          if gdjoin.length == 0
+            @gallery.dimensions << dimension
+            flash[:notice] = "Dimension added."
+          else
+            flash[:notice] = "Dimension already added to this gallery."
+          end
+
+          format.html { render gallery_path(@gallery) }
+        end
+      else
+        @dimension = @gallery.dimensions.build(params[:dimension])
+
+        respond_to do |format|
+          if @dimension.save
+            @gallery.dimensions << @dimension
+            flash[:notice] = "Dimension successfully created."
+            format.html { redirect_to gallery_path(@gallery) }
+          else
+            format.html { render :action => 'new' }
+          end
+        end
       end
     else
-      @dimensions = Dimension.all
-      dimension = @gallery.dimensions.build(params[:dimension])
-      
+      @dimension = Dimension.create(params[:dimension])
+
       respond_to do |format|
-        if dimension.save
-          @gallery.dimensions << dimension
-          flash[:notice] = 'Dimension successfully created.'
-          format.html { redirect_to gallery_path(@gallery) }
+        if @dimension.save
+          flash[:notice] = "Dimension successfully created."
+          format.html { redirect_to dimensions_path }
         else
-          format.html { render :action => "new" }
+          format.html { render :action => 'new'}
         end
       end
     end
-    @gallery.add_dimension(dimension)
   end
+
+
+  def edit
+    @dimension = Dimension.find(params[:id])
+  end
+
+
+  def update
+    dimension = Dimension.find(params[:id])
+
+    respond_to do |format|
+      if dimension.update_attributes(params[:dimension])
+        flash[:notice] = "Dimension successfully updated."
+        if @gallery
+          format.html { redirect_to gallery_path(@gallery) }
+        else
+          format.html { redirect_to dimensions_path }
+        end
+      else
+        format.html { render :action => 'edit' }
+      end
+    end
+  end
+
   
   def destroy
     dimension = Dimension.find(params[:id])
-    
-    dimension.galleries.each do |gallery|
-      gallery.destroy_dimension(dimension)
-    end
-    
-    dimension.galleries.delete_all
-    dimension.destroy
-    
-    respond_to do |format|
-      if @gallery
-        format.html { redirect_to(@gallery) }
-      else
-        format.html { redirect_to(dimensions_path) }
-      end
-    end
-  end
-  
-  def remove
-    dimension = Dimension.find(params[:dimension_id])
-    
-    if @gallery
-      dimension.galleries.delete(@gallery)
-      
-      @gallery.remove_dimension(dimension)
-    else
-      galleries = dimension.galleries
-      dimension.galleries.delete_all
-      
-      galleries.each do |gallery|
-        gallery.remove_dimension(dimension)
-      end
-    end
-    
-    respond_to do |format|
-      if @gallery
-        format.html { redirect_to(@gallery) }
-      else
-        format.html { redirect_to(dimensions_path) }
-      end
-    end
-  end
-  
-  private
-    def find_gallery
-      if params[:gallery_id]
-        @gallery = Gallery.find(params[:gallery_id])
-      end
-    end
 
+    if @gallery
+      gdjoin = Gdjoin.find(:all, :conditions => "gallery_id = #{@gallery.id} AND dimension_id = #{dimension.id}")
+      if gdjoin.length > 0
+        gdjoin.first.destroy
+      end
+
+    else
+      gdjoins = Gdjoin.find(:all, :conditions => "dimension_id = #{dimension.id}")
+      gdjoins.each do |gd|
+        gd.destroy
+      end
+
+      dimension.destroy
+    end
+    
+    respond_to do |format|
+      if @gallery
+        format.html { redirect_to gallery_path(@gallery) }
+      else
+        format.html { redirect_to dimensions_path }
+      end
+    end
+  end
 end

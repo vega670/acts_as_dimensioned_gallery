@@ -6,8 +6,7 @@
 	Crop: <%= dim.crop %><br />
 	Resize: <%= dim.resize %><br />
 	<%= link_to 'Edit', edit_gallery_dimension_path(@gallery, dim) %> |
-	<%= link_to( 'Remove', { :controller => :dimensions, :action => :remove, :gallery_id => @gallery.id, :dimension_id => dim.id}) %> |
-	<%= link_to 'Delete', gallery_dimension_path(@gallery, dim), :confirm => "This will delete the dimension. Are you sure this is what you want to do?", :method => :delete %>
+	<%= link_to 'Remove', gallery_dimension_path(@gallery, dim), :method => :delete, :confirm => "This will remove all images of dimension #{dim.name} from this gallery. Is this what you want to do?" %>
 	<br />
 <% end %>
 <%= link_to 'New dimension', new_gallery_dimension_path(@gallery) %><br />

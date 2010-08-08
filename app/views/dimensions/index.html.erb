@@ -1,2 +1,16 @@
-<h1>Dimensions#index</h1>
-<p>Find me in app/views/dimensions/index.html.erb</p>
+<h1>Dimensions</h1>
+<% @dimensions.each do |dimension| %>
+  <div class="dimension">
+    Name: <%= dimension.name %><br />
+    Height: <%= dimension.height %><br />
+    Width: <%= dimension.width %><br />
+    Aspect: <%= dimension.aspect  %><br />
+    Crop: <%= dimension.crop %><br />
+    Resize: <%= dimension.resize %><br />
+
+    <%= link_to 'Edit', edit_dimension_path(dimension) %> |
+    <%= link_to 'Delete', dimension, :method => :delete, :confirm => 'Are you sure?' %>
+  </div>
+  <br />
+<% end %>
+<%= link_to 'New Dimension', new_dimension_path  %>

@@ -5,20 +5,14 @@ class Image < ActiveRecord::Base
   OpenURI::Buffer::StringMax = 0
   
   belongs_to :gallery
-  
-  def root_path
-    return "#{RAILS_ROOT}/public/#{Gallery.path}"
-  end
-  
-  def galleries_path
-    return "/#{Gallery.path}"
-  end
-  
+
+  #TODO: replace global with class var
   def file= (f)
     self.original_filename = f.original_filename
     @file = f
   end
-  
+
+  #TODO: replace global with class var
   def file
     return @file
   end
@@ -39,14 +33,13 @@ class Image < ActiveRecord::Base
     
     if !meta_strs || meta_strs[0] != 'JPEG' || self.height <= 0 || self.width <= 0
       errors.add_to_base 'Data contains errors or is not JPEG format.'
-      return
     end
   end
   
   def after_save
     gallery = Gallery.find(self.gallery_id)
     temp_path = self.file.path
-    base_path = "#{self.root_path}/#{gallery.holder_type.downcase}/#{gallery.id.to_s}/#{self.id.to_s}"
+    base_path = "#{Gallery.absolute_path}/#{gallery.holder}/#{gallery.id.to_s}/#{self.id.to_s}"
     FileUtils.mkdir_p(base_path)
     
     # keep original copy
@@ -61,14 +54,14 @@ class Image < ActiveRecord::Base
   end
   
   def after_destroy
-    base_path = "#{self.root_path}/#{gallery.holder_type.downcase}/#{gallery.id.to_s}/#{self.id.to_s}"
+    base_path = "#{Gallery.absolute_path}/#{gallery.holder}/#{gallery.id.to_s}/#{self.id.to_s}"
     FileUtils.remove_entry_secure(base_path)
   end
   
   def create_with_dimension(dimension)
     gallery = Gallery.find(self.gallery_id)
     
-    base_path = "#{self.root_path}/#{gallery.holder_type.downcase}/#{gallery.id.to_s}/#{self.id.to_s}"
+    base_path = "#{Gallery.absolute_path}/#{gallery.holder}/#{gallery.id.to_s}/#{self.id.to_s}"
     dim_name = dimension.name.gsub(/[\s]/,"_").gsub(/[\W]/,"").downcase
     dest_path = "#{base_path}/#{dim_name}.jpg"
     
@@ -132,7 +125,7 @@ class Image < ActiveRecord::Base
   def destroy_with_dimension(dimension)
     gallery = Gallery.find(self.gallery_id)
     
-    base_path = "#{self.root_path}/#{gallery.holder_type.downcase}/#{gallery.id.to_s}/#{self.id.to_s}"
+    base_path = "#{Gallery.absolute_path}/#{gallery.holder}/#{gallery.id.to_s}/#{self.id.to_s}"
     dim_name = dimension.name.gsub(/[\s]/,"_").gsub(/[\W]/,"").downcase
     dest_path = "#{base_path}/#{dim_name}.jpg"
     
@@ -152,6 +145,15 @@ class Image < ActiveRecord::Base
     end
     
     image_name = dim_name.gsub(/[\s]/,"_").gsub(/[\W]/,"").downcase
-    return "#{self.galleries_path}/#{gallery.holder_type.downcase}/#{gallery.id.to_s}/#{self.id.to_s}/#{image_name}.jpg"
+    return "#{Gallery.relative_path}/#{gallery.holder}/#{gallery.id.to_s}/#{self.id.to_s}/#{image_name}.jpg"
+  end
+
+
+  def holder(gallery = nil)
+    if !gallery
+      gallery = Gallery.find(self.gallery_id)
+    end
+
+    return gallery.holder_type.pluralize.downcase
   end
 end

@@ -1,7 +1,6 @@
-class GalleriesController < ApplicationController
+class GalleriesController < AadgController
+
   layout 'application'
-  
-  before_filter :find_holder
   
   def index
     if @holder
