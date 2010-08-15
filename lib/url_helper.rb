@@ -9,14 +9,15 @@ module ActionView
           escape = true
           strs = options.split('/')
           if (strs.include? 'galleries') || (strs.include? 'dimensions') || (strs.include? 'images')
-            return prefix_holder(options)
+            prefix_holder(options)
           else
-            return options
+            options
           end
         when Hash
           options = { :only_path => options[:host].nil? }.update(options.symbolize_keys)
           escape  = options.key?(:escape) ? options.delete(:escape) : true
-          if %w[galleries dimensions images].include? options[:controller]
+          polymorphic = options.key?(:polymorphic) ? options.delete(:polymorphic) : true
+          if polymorphic && (%w[galleries dimensions images].include? options[:controller].to_s)
             prefix_holder(@controller.send(:url_for, options))
           else
             @controller.send(:url_for, options)
@@ -34,7 +35,7 @@ module ActionView
 
       def prefix_holder(url)
         strs = url.split('/')
-        if @holder && !(strs.include? @holder.class.to_s.pluralize.downcase)
+        if @holder && (@holder.automatic_polymorphic_paths == :true) && !(strs.include? @holder.class.to_s.pluralize.downcase)
           return "/#{@holder.class.to_s.pluralize.downcase}/#{@holder.id}#{url}"
         else
           return url

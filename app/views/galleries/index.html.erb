@@ -4,9 +4,10 @@
 		Description: <%= gallery.description %><br />
 
 		<%= link_to 'Edit', edit_gallery_path(gallery) %> |
-                <%= link_to 'Delete', gallery_path(gallery), :method => :delete, :confirm => "Are you sure?" %><br />
+                <%= link_to 'Delete', {:controller => :galleries, :action => :destroy, :id => gallery.id, :polymorphic => false}, :method => :delete, :confirm => "Are you sure?" %><br />
                 <br />
 	</div>
 <% end %>
 <%= @holder.class.name %>
 <%= gallery_path(@galleries.first) %>
+<%= Work.automatic_polymorphic_paths %>

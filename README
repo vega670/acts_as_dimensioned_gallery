@@ -64,6 +64,9 @@ CREATE TABLE `gdjoins` (
 
 2. In all models you want to add galleries to, call
 acts_as_dimensioned_gallery.
+  a) When creating links in pages rendered by controllers in the plugin app, the
+     default behavior is to create polymorphic routes. To disable this, include
+     ":automatic_polymorphic_routes => :false" after acts_as_dimensioned_gallery.
 
 3. Add a directory named 'galleries' in the 'public' directory of
 your Rails app.

@@ -8,7 +8,10 @@ module ActiveRecord
       module ClassMethods
 
         def acts_as_dimensioned_gallery(options = {})
-          
+
+          cattr_accessor :automatic_polymorphic_paths
+          self.automatic_polymorphic_paths = (options[:automatic_polymorphic_paths] || :true)
+
           holder = self.name.to_s.constantize
           holder.class_eval do
             has_many :galleries, :as => :holder
