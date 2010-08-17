@@ -5,6 +5,10 @@
     <%= collection_select(:dimension, :id, @dimensions, :id, :name) %>
     <%= submit_tag 'Select' %>
   <% end %>
+  <% form_for([@holder, @gallery, @dimension]) do %>
+    <%= collection_select(:dimension, :id, @dimensions, :id, :name) %>
+    <%= submit_tag 'Select' %>
+  <% end %>
   <br />
   <h2>Add new:</h2>
 <% end %>

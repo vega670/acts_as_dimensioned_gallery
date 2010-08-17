@@ -97,18 +97,4 @@ class GalleriesController < AadgController
   def path
     return Gallery.path
   end
-
-  
-  private
-    def find_holder
-      strs = request.path.split('/')
-      if strs.index('galleries') == 1
-        @holder = nil
-      else
-        holder_id = strs[strs.index('galleries') - 1].to_i
-        holder_type = strs[strs.index('galleries') - 2]
-        @klass = holder_type.capitalize.singularize.constantize
-        @holder = @klass.find(holder_id)
-      end
-    end
 end

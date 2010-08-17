@@ -12,7 +12,10 @@ class DimensionsController < AadgController
       format.html
     end
   end
-  
+
+  def show
+    @dimension = Dimension.find(params[:id])
+  end
   
   def new
     if @gallery

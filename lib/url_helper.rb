@@ -8,7 +8,7 @@ module ActionView
         when String
           escape = true
           strs = options.split('/')
-          if (strs.include? 'galleries') || (strs.include? 'dimensions') || (strs.include? 'images')
+          if (strs.include? 'galleries') || (strs.include? 'images')
             prefix_holder(options)
           else
             options
@@ -17,7 +17,7 @@ module ActionView
           options = { :only_path => options[:host].nil? }.update(options.symbolize_keys)
           escape  = options.key?(:escape) ? options.delete(:escape) : true
           polymorphic = options.key?(:polymorphic) ? options.delete(:polymorphic) : true
-          if polymorphic && (%w[galleries dimensions images].include? options[:controller].to_s)
+          if polymorphic && (%w[galleries images].include? options[:controller].to_s)
             prefix_holder(@controller.send(:url_for, options))
           else
             @controller.send(:url_for, options)

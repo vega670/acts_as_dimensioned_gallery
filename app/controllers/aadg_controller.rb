@@ -11,7 +11,7 @@ class AadgController < ActionController::Base
 
   def find_holder
     strs = request.path.split('/')
-    if strs.index('galleries') != 1 && strs.index('galleries')
+    if strs.index('galleries') && (strs.index('galleries') != 1) && ((strs[1] <=> 'dimensions') != 0)
       holder_id = strs[strs.index('galleries') - 1].to_i
       holder_type = strs[strs.index('galleries') - 2]
       @klass = holder_type.capitalize.singularize.constantize

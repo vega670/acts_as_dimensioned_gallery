@@ -1,7 +1,7 @@
 <h1>Dimensions</h1>
 <% @dimensions.each do |dimension| %>
   <div class="dimension">
-    Name: <%= dimension.name %><br />
+    Name: <%= link_to dimension.name, dimension %><br />
     Height: <%= dimension.height %><br />
     Width: <%= dimension.width %><br />
     Aspect: <%= dimension.aspect  %><br />
@@ -19,3 +19,8 @@
   <br />
 <% end %>
 <%= link_to 'New Dimension', new_dimension_path  %>
+<%= @holder.class.name %>
+<%= Work.automatic_polymorphic_paths %>
+<%= url_for([@holder, 'dimensions']) %>
+<%= dimensions_path %>
+<%= request.path.split('/')[1] <=> 'dimensions' %>
