@@ -42,7 +42,7 @@ class DimensionsController < AadgController
             flash[:notice] = "Dimension already added to this gallery."
           end
 
-          format.html { render gallery_path(@gallery) }
+          format.html { redirect_to url_for([@holder, @gallery])}
         end
       else
         @dimension = @gallery.dimensions.build(params[:dimension])
@@ -51,7 +51,7 @@ class DimensionsController < AadgController
           if @dimension.save
             @gallery.dimensions << @dimension
             flash[:notice] = "Dimension successfully created."
-            format.html { redirect_to gallery_path(@gallery) }
+            format.html { redirect_to url_for([@holder, @gallery]) }
           else
             format.html { render :action => 'new' }
           end
@@ -63,7 +63,7 @@ class DimensionsController < AadgController
       respond_to do |format|
         if @dimension.save
           flash[:notice] = "Dimension successfully created."
-          format.html { redirect_to dimensions_path }
+          format.html { redirect_to url_for([@holder, 'dimensions']) }
         else
           format.html { render :action => 'new'}
         end
@@ -78,13 +78,13 @@ class DimensionsController < AadgController
 
 
   def update
-    dimension = Dimension.find(params[:id])
+    @dimension = Dimension.find(params[:id])
 
     respond_to do |format|
-      if dimension.update_attributes(params[:dimension])
+      if @dimension.update_attributes(params[:dimension])
         flash[:notice] = "Dimension successfully updated."
         if @gallery
-          format.html { redirect_to gallery_path(@gallery) }
+          format.html { redirect_to url_for([@holder, @gallery]) }
         else
           format.html { redirect_to dimensions_path }
         end

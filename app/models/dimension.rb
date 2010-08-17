@@ -2,9 +2,9 @@ class Dimension < ActiveRecord::Base
   has_many :gdjoins
   has_many :galleries, :through => :gdjoins
   
-  validates_uniqueness_of :name, :case_sensitive => false, :message => "belongs to another dimension"
+  validates_uniqueness_of :name, :case_sensitive => false, :message => "belongs to another dimension."
   
-  validates_format_of :name, :with => /^([a-zA-Z0-9])/, :message => "must only be letters, numbers, and spaces"
+  validates_format_of :name, :with => /^[a-zA-Z0-9\s]*$/, :message => "must only be letters, numbers, and spaces."
   
   validates_presence_of :name
   
@@ -17,16 +17,32 @@ class Dimension < ActiveRecord::Base
       errors.add_to_base "Aspect ratios must be greater than 0."
     end
 
+    if !self.resize && !self.crop
+      errors.add_to_base "Resize and/or Crop must be selected."
+    end
+
+    if !self.aspect && !self.width && !self.height
+      errors.add_to_base "Dimensions must have at least one of the following: Width, Height, Aspect ratio."
+    end
   end
 
   def before_update
-    gdjoins = Gdjoin.find(:all, :conditions => "dimension_id = #{self.id}")
     dimension = Dimension.find(self.id)
-    gdjoins.each do |gdjoin|
-      gallery = Gallery.find(gdjoin.gallery_id)
-      gallery.images.each do |image|
-        image.destroy_with_dimension(dimension)
-        image.create_with_dimension(self)
+    gdjoins = Gdjoin.find(:all, :conditions => "dimension_id = #{self.id}")
+    if (dimension.width != self.width) || (dimension.height != self.height) || (dimension.aspect != self.aspect) || (dimension.resize != self.resize) || (dimension.crop != self.crop)
+      gdjoins.each do |gdjoin|
+        gallery = Gallery.find(gdjoin.gallery_id)
+        gallery.images.each do |image|
+          image.destroy_with_dimension(dimension)
+          image.create_with_dimension(self)
+        end
+      end
+    else
+      gdjoins.each do |gdjoin|
+        gallery = Gallery.find(gdjoin.gallery_id)
+        gallery.images.each do |image|
+          image.rename_with_dimension(dimension, self)
+        end
       end
     end
   end

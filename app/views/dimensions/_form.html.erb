@@ -1,13 +1,3 @@
-<% if @gallery %>
-  <h2>Add existing:</h2>
-  <% form_for([@holder, @gallery, @dimension]) do %>
-    <%= collection_select(:dimension, :id, @dimensions, :id, :name) %>
-    <%= submit_tag 'Select' %>
-  <% end %>
-  <br />
-  <h2>Add new:</h2>
-<% end %>
-
 <% form_for([@holder, @gallery, @dimension]) do |f| %>
 <p>
   <%= f.error_messages %>
@@ -16,13 +6,13 @@
   <%= f.label :name %>
   <%= f.text_field :name %>
 </p>
-<p id="width_input">
-  <%= f.label :width %>
-  <%= f.text_field :width %>
-</p>
 <p id="height_input">
   <%= f.label :height %>
   <%= f.text_field :height %>
+</p>
+<p id="width_input">
+  <%= f.label :width %>
+  <%= f.text_field :width %>
 </p>
 <p id="aspect_input">
   <%= f.label 'Aspect ratio' %>

@@ -7,6 +7,11 @@
     Aspect: <%= dimension.aspect  %><br />
     Crop: <%= dimension.crop %><br />
     Resize: <%= dimension.resize %><br />
+    Used By:
+      <% dimension.galleries.each do |gallery| %>
+        <%= link_to gallery.name, gallery %>
+      <% end %>
+    <br />
 
     <%= link_to 'Edit', edit_dimension_path(dimension) %> |
     <%= link_to 'Delete', dimension, :method => :delete, :confirm => 'Are you sure?' %>

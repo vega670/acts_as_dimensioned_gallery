@@ -131,6 +131,18 @@ class Image < ActiveRecord::Base
     
     FileUtils.rm(dest_path)
   end
+
+  def rename_with_dimension(old, new)
+    gallery = Gallery.find(self.gallery_id)
+
+    base_path = "#{Gallery.absolute_path}/#{gallery.holder}/#{gallery.id.to_s}/#{self.id.to_s}"
+    old_name = old.name.gsub(/[\s]/,"_").gsub(/[\W]/,"").downcase
+    new_name = new.name.gsub(/[\s]/,"_").gsub(/[\W]/,"").downcase
+    old_path = "#{base_path}/#{old_name}.jpg"
+    new_path = "#{base_path}/#{new_name}.jpg"
+
+    FileUtils.mv(old_path, new_path)
+  end
   
   def tag(dim_name)
     gallery = Gallery.find(self.gallery_id)

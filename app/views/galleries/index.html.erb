@@ -11,3 +11,5 @@
 <%= @holder.class.name %>
 <%= gallery_path(@galleries.first) %>
 <%= Work.automatic_polymorphic_paths %>
+<%= url_for([@holder, 'dimensions']) %>
+<%= dimensions_path %>
