@@ -16,7 +16,11 @@ class Image < ActiveRecord::Base
   def file
     return @file
   end
-  
+
+  def self.unaltered_file
+    return 'original'
+  end
+
   def validate
     errors.add_on_empty 'name'
     
@@ -43,7 +47,7 @@ class Image < ActiveRecord::Base
     FileUtils.mkdir_p(base_path)
     
     # keep original copy
-    original_path = "#{base_path}/original.jpg"
+    original_path = "#{base_path}/#{Image.unaltered_file}.jpg"
     FileUtils.cp(temp_path, original_path)
     
     dims = gallery.dimensions
@@ -65,7 +69,7 @@ class Image < ActiveRecord::Base
     dim_name = dimension.name.gsub(/[\s]/,"_").gsub(/[\W]/,"").downcase
     dest_path = "#{base_path}/#{dim_name}.jpg"
     
-    src_path = "#{base_path}/original.jpg"
+    src_path = "#{base_path}/#{Image.unaltered_file}.jpg"
     
     FileUtils.cp(src_path, dest_path)
     
@@ -155,8 +159,12 @@ class Image < ActiveRecord::Base
     if !gallery
       gallery = Gallery.find(self.gallery_id)
     end
-    
-    image_name = dim_name.gsub(/[\s]/,"_").gsub(/[\W]/,"").downcase
+
+    if (dim_name.downcase <=> Image.unaltered_file) == 0
+      image_name = Image.unaltered_file
+    else
+      image_name = dim_name.gsub(/[\s]/,"_").gsub(/[\W]/,"").downcase
+    end
     return "#{Gallery.relative_path}/#{gallery.holder}/#{gallery.id.to_s}/#{self.id.to_s}/#{image_name}.jpg"
   end
 

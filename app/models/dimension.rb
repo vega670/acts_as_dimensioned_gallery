@@ -9,6 +9,10 @@ class Dimension < ActiveRecord::Base
   validates_presence_of :name
   
   def validate
+    if (self.name.downcase <=> Image.unaltered_file) == 0
+      errors.add_to_base "Cannot create dimension named #{Image.unaltered_file.capitalize}. That is a reserved name."
+    end
+
     if ((self.height) ? self.height < 1 : false) || ((self.width) ? self.width < 1 : false)
       errors.add_to_base "Smallest acceptable dimension is 1x1 pixels."
     end

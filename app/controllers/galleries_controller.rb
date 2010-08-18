@@ -5,6 +5,9 @@ class GalleriesController < AadgController
   def index
     if @holder
       @galleries = @holder.galleries
+    elsif params[:dimension_id]
+      dimension = Dimension.find(params[:dimension_id])
+      @galleries = dimension.galleries
     else
       @galleries = Gallery.all
     end
@@ -64,7 +67,16 @@ class GalleriesController < AadgController
 
 
   def update
-    
+    @gallery = Gallery.find(params[:id])
+
+    respond_to do |format|
+      if @gallery.update_attributes(params[:gallery])
+        flash[:notice] = "Gallery successfully updated."
+        format.html { redirect_to url_for([@holder, @gallery]) }
+      else
+        format.html { render :action => 'edit' }
+      end
+    end
   end
 
 

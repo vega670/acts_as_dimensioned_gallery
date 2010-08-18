@@ -17,7 +17,6 @@
         <%= image.tag(dim.name) %>
       <% end %>
       <%= link_to 'Show', gallery_image_path(@gallery, image) %> |
-      <%= link_to 'Edit', edit_gallery_image_path(@gallery, image) %> |
       <%= link_to 'Delete', gallery_image_path(@gallery, image), :confirm => "Are you sure?", :method => :delete %><br />
       <br />
 

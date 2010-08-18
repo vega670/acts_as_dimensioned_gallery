@@ -1,15 +1,14 @@
 class DimensionsController < AadgController
   layout 'application'
-
-  helper :galleries
   
   before_filter :find_gallery
   
   def index
-    @dimensions = Dimension.all
-    
-    respond_to do |format|
-      format.html
+    if params[:gallery_id]
+      gallery = Gallery.find(params[:gallery_id])
+      @dimensions = gallery.dimensions
+    else
+      @dimensions = Dimension.all
     end
   end
 
@@ -24,22 +23,18 @@ class DimensionsController < AadgController
     else
       @dimension = Dimension.new
     end
-    
-    respond_to do |format|
-      format.html
-    end
   end
 
   
   def create
     if @gallery
       if params[:dimension][:id]
-        dimension = Dimension.find(params[:dimension][:id])
-        gdjoin = Gdjoin.find(:all, :conditions => "gallery_id = #{@gallery.id} AND dimension_id = #{dimension.id}")
+        @dimension = Dimension.find(params[:dimension][:id])
+        gdjoin = Gdjoin.find(:all, :conditions => "gallery_id = #{@gallery.id} AND dimension_id = #{@dimension.id}")
 
         respond_to do |format|
           if gdjoin.length == 0
-            @gallery.dimensions << dimension
+            @gallery.dimensions << @dimension
             flash[:notice] = "Dimension added."
           else
             flash[:notice] = "Dimension already added to this gallery."
@@ -56,6 +51,7 @@ class DimensionsController < AadgController
             flash[:notice] = "Dimension successfully created."
             format.html { redirect_to url_for([@holder, @gallery]) }
           else
+            @dimensions = Dimension.all
             format.html { render :action => 'new' }
           end
         end
@@ -66,7 +62,7 @@ class DimensionsController < AadgController
       respond_to do |format|
         if @dimension.save
           flash[:notice] = "Dimension successfully created."
-          format.html { redirect_to url_for([@holder, 'dimensions']) }
+          format.html { redirect_to dimensions_path }
         else
           format.html { render :action => 'new'}
         end
@@ -118,7 +114,7 @@ class DimensionsController < AadgController
     
     respond_to do |format|
       if @gallery
-        format.html { redirect_to gallery_path(@gallery) }
+        format.html { redirect_to url_for([@holder, @gallery]) }
       else
         format.html { redirect_to dimensions_path }
       end

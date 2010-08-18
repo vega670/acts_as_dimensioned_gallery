@@ -1,4 +1,6 @@
 <h1><%= @image.name %></h1>
+<%= Image.unaltered_file.capitalize %>:
+<%= @image.tag(Image.unaltered_file) %><br />
 
 <% @gallery.dimensions.each do |dim| %>
 	<%= "#{dim.name}: #{@image.tag(dim.name)}" %><br />

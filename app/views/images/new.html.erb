@@ -1,5 +1,19 @@
 <h1>New image</h1>
 
-<%= render :partial => 'form' %>
+<% form_for([@gallery, @image], :html => { :multipart => true } ) do |f| %>
+<p>
+	<%= f.error_messages %>
+</p>
+<p>
+	<%= f.label :name, 'Name:' %>
+	<%= f.text_field :name %>
+</p>
+<p>
+	<%= file_field_tag 'image[file]' %>
+</p>
+<p>
+	<%= f.submit 'Save' %>
+</p>
+<% end %>
 
 <%= link_to 'Back', gallery_path(@gallery) %>

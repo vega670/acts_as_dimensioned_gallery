@@ -4,34 +4,22 @@ class ImagesController < AadgController
   before_filter :find_gallery
   
   def index
-    @images = @gallery.images
-    
-    respond_to do |format|
-      format.html
+    if @gallery
+      @images = @gallery.images
+    else
+      @images = Image.all
     end
   end
 
   def show
     @image = Image.find(params[:id])
-    
-    respond_to do |format|
-      format.html
-    end
   end
 
   def new
-    @image = @gallery.images.new
-    
-    respond_to do |format|
-      format.html
-    end
-  end
-
-  def edit
-    @image = Image.find(params[:id])
-    
-    respond_to do |format|
-      format.html
+    if @gallery
+      @image = @gallery.images.new
+    else
+      @image = Image.new
     end
   end
   
@@ -40,15 +28,15 @@ class ImagesController < AadgController
     
     respond_to do |format|
       if @image.save
-        format.html { redirect_to(@gallery) }
+        if @gallery
+          format.html { redirect_to url_for([@holder, @gallery]) }
+        else
+          format.html { redirect_to(@image) }
+        end
       else
         format.html {render :action => "new" }
       end
     end
-  end
-  
-  def update
-    
   end
   
   def destroy
@@ -56,12 +44,11 @@ class ImagesController < AadgController
     @image.destroy
     
     respond_to do |format|
-      format.html { redirect_to(@gallery) }
+      if @gallery
+        format.html { redirect_to url_for([@holder, @gallery]) }
+      else
+        format.html { redirect_to(@image) }
+      end
     end
   end
-  
-  private
-    def find_gallery
-      @gallery = Gallery.find(params[:gallery_id])
-    end
 end
