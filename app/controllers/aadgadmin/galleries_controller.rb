@@ -1,4 +1,4 @@
-class GalleriesController < AadgController
+class Aadgadmin::GalleriesController < Aadgadmin::AadgController
 
   layout 'application'
   
