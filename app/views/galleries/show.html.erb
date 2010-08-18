@@ -4,11 +4,6 @@
   <br />
   <%= link_to 'back', galleries_path %>
 
-  <h2>Dimensions</h2>
-  <div id="dimensions">
-    <%= render :partial => 'dimensions/list' %>
-  </div>
-
   <h2>Images</h2>
   <div class="images">
     <% @gallery.images.each do |image| %>
@@ -16,11 +11,9 @@
       <% @gallery.dimensions.each do |dim| %>
         <%= image.tag(dim.name) %>
       <% end %>
-      <%= link_to 'Show', gallery_image_path(@gallery, image) %> |
-      <%= link_to 'Delete', gallery_image_path(@gallery, image), :confirm => "Are you sure?", :method => :delete %><br />
+      <%= link_to 'Show', gallery_image_path(@gallery, image) %>
       <br />
 
     <% end %>
-    <%= link_to 'New image', new_gallery_image_path(@gallery) %>
   </div>
 </div>

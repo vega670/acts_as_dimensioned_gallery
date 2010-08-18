@@ -3,7 +3,7 @@
 <%= render :partial => "form" %>
 
 <% if @gallery %>
-  <%= link_to 'Back', gallery_path(@gallery) %>
+  <%= link_to 'Back', aadgadmin_gallery_path(@gallery) %>
 <% else %>
-  <%= link_to 'Back', dimensions_path %>
+  <%= link_to 'Back', aadgadmin_dimensions_path %>
 <% end %>

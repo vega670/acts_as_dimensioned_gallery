@@ -1,6 +1,39 @@
-<%#
-# To change this template, choose Tools | Templates
-# and open the template in the editor.
-%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+       "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
-<%= "aadg_admin.html" %>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
+  <title>Dimensioned Gallery Admin: <%= controller.action_name %></title>
+  <style type="text/css">
+    body {
+      background-color: #fff;
+      color: #333;
+    }
+
+    body, p, ol, ul, td {
+      font-family: verdana, arial, helvetica, sans-serif;
+      font-size:   13px;
+      line-height: 18px;
+    }
+
+    form {
+      background-color: #f7f6f1;
+      width: 500px;
+      border: 3px solid #333;
+      padding: 10px;
+    }
+  </style>
+</head>
+<body>
+<h1>ADMIN</h1>
+<%= link_to 'Dimensions', aadgadmin_dimensions_path %> |
+<%= link_to 'Works', works_path %> |
+<%= link_to 'Galleries', galleries_path %>
+
+<p style="color: green"><%= flash[:notice] %></p>
+
+<%= yield %>
+
+</body>
+</html>

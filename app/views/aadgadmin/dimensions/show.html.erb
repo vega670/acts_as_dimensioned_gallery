@@ -7,11 +7,11 @@
     Resize: <%= @dimension.resize %><br />
     Used By:
       <% @dimension.galleries.each do |gallery| %>
-        <%= link_to gallery.name, gallery %>
+        <%= link_to gallery.name, aadgadmin_gallery_path(gallery) %>
       <% end %>
     <br />
-    <%= link_to 'View Galleries', dimension_galleries_path(@dimension) %><br />
+    <%= link_to 'View Galleries', aadgadmin_dimension_galleries_path(@dimension) %><br />
 
-    <%= link_to 'Edit', edit_dimension_path(@dimension) %> |
-    <%= link_to 'Delete', @dimension, :method => :delete, :confirm => 'Are you sure?' %>
+    <%= link_to 'Edit', edit_aadgadmin_dimension_path(@dimension) %> |
+    <%= link_to 'Delete', aadgadmin_dimension_path(@dimension), :method => :delete, :confirm => 'Are you sure?' %>
   </div>

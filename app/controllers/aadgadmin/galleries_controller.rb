@@ -1,6 +1,6 @@
 class Aadgadmin::GalleriesController < Aadgadmin::AadgController
 
-  layout 'application'
+  layout 'aadg_admin'
   
   def index
     if @holder
@@ -16,8 +16,8 @@ class Aadgadmin::GalleriesController < Aadgadmin::AadgController
       format.html
     end
   end
-
-
+  
+  
   def show
     @gallery = Gallery.find(params[:id])
     
@@ -25,7 +25,7 @@ class Aadgadmin::GalleriesController < Aadgadmin::AadgController
       format.html
     end
   end
-
+  
 
   def new
     if @holder
@@ -103,10 +103,5 @@ class Aadgadmin::GalleriesController < Aadgadmin::AadgController
     gallery.save
     
     render :text => 'Image set as gallery image.'
-  end
-
-
-  def path
-    return Gallery.path
   end
 end

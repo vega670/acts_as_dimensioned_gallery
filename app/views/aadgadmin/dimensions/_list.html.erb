@@ -1,12 +1,12 @@
 <% @gallery.dimensions.each do |dim| %>
-	Name: <%= dim.name %><br />
+	Name: <%= link_to dim.name, aadgadmin_dimension_path(dim) %><br />
 	Width: <%= dim.width %><br />
 	Height: <%= dim.height %><br />
 	Aspect: <%= dim.aspect %><br />
 	Crop: <%= dim.crop %><br />
 	Resize: <%= dim.resize %><br />
-	<%= link_to 'Edit', edit_gallery_dimension_path(@gallery, dim) %> |
-	<%= link_to 'Remove', gallery_dimension_path(@gallery, dim), :method => :delete, :confirm => "This will remove all images of dimension #{dim.name} from this gallery. Is this what you want to do?" %>
+	<%= link_to 'Edit', edit_aadgadmin_gallery_dimension_path(@gallery, dim) %> |
+	<%= link_to 'Remove', aadgadmin_gallery_dimension_path(@gallery, dim), :method => :delete, :confirm => "This will remove all images of dimension #{dim.name} from this gallery. Is this what you want to do?" %>
 	<br />
 <% end %>
-<%= link_to 'New dimension', new_gallery_dimension_path(@gallery) %><br />
+<%= link_to 'New dimension', new_aadgadmin_gallery_dimension_path(@gallery) %><br />

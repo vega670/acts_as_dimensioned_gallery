@@ -2,11 +2,11 @@
   <h1><%= @gallery.name %></h1>
   <h3><%= @gallery.description %></h3>
   <br />
-  <%= link_to 'back', galleries_path %>
+  <%= link_to 'back', aadgadmin_galleries_path %>
 
   <h2>Dimensions</h2>
   <div id="dimensions">
-    <%= render :partial => 'dimensions/list' %>
+    <%= render :partial => 'aadgadmin/dimensions/list' %>
   </div>
 
   <h2>Images</h2>
@@ -16,11 +16,11 @@
       <% @gallery.dimensions.each do |dim| %>
         <%= image.tag(dim.name) %>
       <% end %>
-      <%= link_to 'Show', gallery_image_path(@gallery, image) %> |
-      <%= link_to 'Delete', gallery_image_path(@gallery, image), :confirm => "Are you sure?", :method => :delete %><br />
+      <%= link_to 'Show', aadgadmin_gallery_image_path(@gallery, image) %> |
+      <%= link_to 'Delete', aadgadmin_gallery_image_path(@gallery, image), :confirm => "Are you sure?", :method => :delete %><br />
       <br />
 
     <% end %>
-    <%= link_to 'New image', new_gallery_image_path(@gallery) %>
+    <%= link_to 'New image', new_aadgadmin_gallery_image_path(@gallery) %>
   </div>
 </div>

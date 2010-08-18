@@ -11,8 +11,8 @@ class AadgController < ActionController::Base
 
   def find_holder
     strs = request.path.split('/')
-    if strs.index('galleries') && (strs.index('galleries') != 1) && !('dimensions' == strs[1])
-      if strs[strs.index('galleries') - 1] == 'aadgadmin'
+    if strs.index('galleries') && (strs.index('galleries') != 1) && strs.index('aadgadmin') != 1 && !('dimensions' == strs[1])
+      if strs.include? 'aadgadmin'
         offset = 2
       else
         offset = 1

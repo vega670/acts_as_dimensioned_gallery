@@ -3,8 +3,8 @@
 		<%= link_to gallery.name, gallery %><br />
 		Description: <%= gallery.description %><br />
 
-		<%= link_to 'Edit', edit_gallery_path(gallery) %> |
-                <%= link_to 'Delete', {:controller => :galleries, :action => :destroy, :id => gallery.id, :polymorphic => false}, :method => :delete, :confirm => "Are you sure?" %><br />
+		<%= link_to 'Edit', edit_aadgadmin_gallery_path(gallery) %> |
+                <%= link_to 'Delete', {:controller => 'aadgadmin/galleries', :action => :destroy, :id => gallery.id, :polymorphic => false}, :method => :delete, :confirm => "Are you sure?" %><br />
                 <br />
 	</div>
 <% end %>

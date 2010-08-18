@@ -1,7 +1,7 @@
 <h1>New dimension</h1>
 <% if @gallery %>
   <h2>Add existing:</h2>
-  <% form_for([@holder, @gallery, @dimension]) do %>
+  <% form_for([@holder, :aadgadmin, @gallery, @dimension]) do %>
     <%= collection_select(:dimension, :id, @dimensions, :id, :name) %>
     <%= submit_tag 'Select' %>
   <% end %>
@@ -12,7 +12,7 @@
 <%= render :partial => "form" %>
 
 <% if @gallery %>
-  <%= link_to 'Back', gallery_path(@gallery) %>
+  <%= link_to 'Back', aadgadmin_gallery_path(@gallery) %>
 <% else %>
-  <%= link_to 'Back', dimensions_path %>
+  <%= link_to 'Back', aadgadmin_dimensions_path %>
 <% end %>

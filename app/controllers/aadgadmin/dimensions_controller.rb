@@ -1,5 +1,5 @@
 class Aadgadmin::DimensionsController < Aadgadmin::AadgController
-  layout 'application'
+  layout 'aadg_admin'
   
   before_filter :find_gallery
   
@@ -11,11 +11,11 @@ class Aadgadmin::DimensionsController < Aadgadmin::AadgController
       @dimensions = Dimension.all
     end
   end
-
+  
   def show
     @dimension = Dimension.find(params[:id])
   end
-  
+
   def new
     if @gallery
       @dimensions = Dimension.all

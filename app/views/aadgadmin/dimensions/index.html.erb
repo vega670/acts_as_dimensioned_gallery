@@ -1,7 +1,7 @@
 <h1>Dimensions</h1>
 <% @dimensions.each do |dimension| %>
   <div class="dimension">
-    Name: <%= link_to dimension.name, dimension %><br />
+    Name: <%= link_to dimension.name, aadgadmin_dimension_path(dimension) %><br />
     Height: <%= dimension.height %><br />
     Width: <%= dimension.width %><br />
     Aspect: <%= dimension.aspect  %><br />
@@ -13,8 +13,8 @@
       <% end %>
     <br />
 
-    <%= link_to 'Edit', edit_dimension_path(dimension) %> |
-    <%= link_to 'Delete', dimension, :method => :delete, :confirm => 'Are you sure?' %>
+    <%= link_to 'Edit', edit_aadgadmin_dimension_path(dimension) %> |
+    <%= link_to 'Delete', aadgadmin_dimension_path(dimension), :method => :delete, :confirm => 'Are you sure?' %>
   </div>
   <br />
 <% end %>

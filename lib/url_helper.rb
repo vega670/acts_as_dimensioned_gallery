@@ -2,6 +2,26 @@ module ActionView
   module Helpers
     module UrlHelper
 
+      def new_aadgadmin_gallery_image_path(gallery)
+        return url_for([@holder, :aadgadmin, gallery]) + '/images/new'
+      end
+
+      def aadgadmin_gallery_image_path(gallery, image)
+        return url_for([@holder, :aadgadmin, gallery]) + '/images/' + image.id.to_s
+      end
+
+      def new_aadgadmin_gallery_dimension_path(gallery)
+        return url_for([@holder, :aadgadmin, gallery]) + '/dimensions/new'
+      end
+
+      def edit_aadgadmin_gallery_dimension_path(gallery, dimension)
+        return url_for([@holder, :aadgadmin, gallery]) + '/dimensions/' + dimension.id.to_s + '/edit'
+      end
+
+      def aadgadmin_gallery_dimension_path(gallery, dimension)
+        return url_for([@holder, :aadgadmin, gallery]) + '/dimensions/' + dimension.id.to_s
+      end
+
       def url_for(options = {})
         options ||= {}
         url = case options
@@ -29,7 +49,7 @@ module ActionView
           escape = false
           polymorphic_path(options)
         end
-        
+
         escape ? escape_once(url) : url
       end
 
@@ -41,7 +61,7 @@ module ActionView
           return url
         end
       end
-      
+
     end
   end
 end

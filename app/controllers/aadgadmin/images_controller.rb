@@ -1,5 +1,5 @@
 class Aadgadmin::ImagesController < Aadgadmin::AadgController
-  layout 'application'
+  layout 'aadg_admin'
   
   before_filter :find_gallery
   
