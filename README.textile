@@ -8,7 +8,7 @@ h2. Usage
 
 Follow these steps to install and configure the plugin:
 
-p. # Create the four required tables in your database. This is MySQL example code.
+p. 1. Create the four required tables in your database. This is MySQL example code.
 
 bc.. CREATE TABLE `galleries` (
     `id` INT(11) NOT NULL auto_increment,
@@ -55,15 +55,16 @@ CREATE TABLE `gdjoins` (
     PRIMARY KEY (`id`)
 );
 
-p. # In all models you want to add galleries to, call @acts_as_dimensioned_gallery@.
+
+p. 2. In all models you want to add galleries to, call @acts_as_dimensioned_gallery@.
 
 * When creating links in pages rendered by controllers in the plugin app, the default behavior is to create polymorphic routes. To disable this, include: @:automatic_polymorphic_routes => :false@ after @acts_as_dimensioned_gallery@
 
-p. # Add a directory named @galleries@ in the @public@ directory of your Rails app.
+3. Add a directory named @galleries@ in the @public@ directory of your Rails app.
 
-# If you have not already, install the Image Magick application ( http://www.imagemagick.org/ ). In config/environment.rb, add @IMAGE_MAGICK_PATH = "/path/to/image/magick"@ (the path will usually be @/usr/bin@ on Linux or something like @C:\Program Files\ImageMagick@ on Windows).
+4. If you have not already, install the Image Magick application ( http://www.imagemagick.org/ ). In config/environment.rb, add @IMAGE_MAGICK_PATH = "/path/to/image/magick"@ (the path will usually be @/usr/bin@ on Linux or something like @C:\Program Files\ImageMagick@ on Windows).
 
-# Add the following to the resources you would like to add galleries to in routes.rb:
+5. Add the following to the resources you would like to add galleries to in routes.rb:
 
 bc.. map.resources :your_resource do |your_resource|
     your_resource.resources :galleries do |gallery|
