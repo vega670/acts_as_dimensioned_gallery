@@ -1,5 +1,4 @@
 class Aadgadmin::DimensionsController < Aadgadmin::AadgController
-  layout 'aadg_admin'
   
   before_filter :find_gallery
   

@@ -1,0 +1,134 @@
+h1. ActsAsDimensionedGallery
+
+p. ActsAsDimensionedGallery is a Ruby on Rails plugin allowing developers to add an image gallery to any model in an existing project. The plugin allows image dimensions to be created, edited, or destroyed at any time and will retroactively apply all dimensions to previously uploaded images as well as all new images. Dimensions can be managed as gallery-specific or independently and existing dimensions can be added to any gallery.
+
+h3. *WARNING:* ActsAsDimensionedGallery currently has very basic views and has not been extensively tested. Use with caution.
+
+h2. Usage
+
+Follow these steps to install and configure the plugin:
+
+p. # Create the four required tables in your database. This is MySQL example code.
+
+bc.. CREATE TABLE `galleries` (
+    `id` INT(11) NOT NULL auto_increment,
+    `name` VARCHAR(255) default NULL,
+    `description` TEXT default NULL,
+    `holder_id` INT(11) default NULL,
+    `holder_type` VARCHAR(255) default NULL,
+    `gallery_image_id` INT(11) default NULL,
+    `created_at` DATETIME default NULL,
+    `updated_at` DATETIME default NULL,
+    PRIMARY KEY (`id`)
+);
+
+CREATE TABLE `images` (
+    `id` INT(11) NOT NULL auto_increment,
+    `name` VARCHAR(255) default NULL,
+    `description` TEXT default NULL,
+    `original_filename` VARCHAR(255) default NULL,
+    `height` INT(11) default NULL,
+    `width` INT(11) default NULL,
+    `gallery_id` INT(11) default NULL,
+    `created_at` DATETIME default NULL,
+    `updated_at` DATETIME default NULL,
+    PRIMARY KEY (`id`)
+);
+
+CREATE TABLE `dimensions` (
+    `id` INT(11) NOT NULL auto_increment,
+    `name` VARCHAR(255) default NULL,
+    `height` INT(11) default NULL,
+    `width` INT(11) default NULL,
+    `aspect` FLOAT default NULL,
+    `crop` TINYINT(1) default NULL,
+    `resize` TINYINT(1) default NULL,
+    `created_at` DATETIME default NULL,
+    `updated_at` DATETIME default NULL,
+    PRIMARY KEY (`id`)
+);
+
+CREATE TABLE `gdjoins` (
+    `id` INT(11) NOT NULL auto_increment,
+    `gallery_id` INT(11) default NULL,
+    `dimension_id` INT(11) default NULL,
+    PRIMARY KEY (`id`)
+);
+
+p. # In all models you want to add galleries to, call @acts_as_dimensioned_gallery@.
+
+* When creating links in pages rendered by controllers in the plugin app, the default behavior is to create polymorphic routes. To disable this, include: @:automatic_polymorphic_routes => :false@ after @acts_as_dimensioned_gallery@
+
+p. # Add a directory named @galleries@ in the @public@ directory of your Rails app.
+
+# If you have not already, install the Image Magick application ( http://www.imagemagick.org/ ). In config/environment.rb, add @IMAGE_MAGICK_PATH = "/path/to/image/magick"@ (the path will usually be @/usr/bin@ on Linux or something like @C:\Program Files\ImageMagick@ on Windows).
+
+# Add the following to the resources you would like to add galleries to in routes.rb:
+
+bc.. map.resources :your_resource do |your_resource|
+    your_resource.resources :galleries do |gallery|
+      gallery.resources :images
+    end
+
+    your_resource.namespace(:aadgadmin, :namespace => '') do |aadgadmin|
+      aadgadmin.resources :galleries do |gallery|
+        gallery.resources :dimensions
+        gallery.resources :images
+      end
+      aadgadmin.resources :dimensions do |dimension|
+        dimension.resources :galleries
+      end
+    end
+  end
+
+  map.namespace :aadgadmin do |aadgadmin|
+    aadgadmin.resources :dimensions do |dimension|
+      dimension.resources :galleries
+    end
+  end
+
+
+h2. Example for resource "Item":
+
+h3. Item.rb
+
+bc.. class Item < ActiveRecord::Base
+    acts_as_dimensioned_gallery
+end
+
+
+h3. config/environment.rb
+
+add:
+
+bc.. IMAGE_MAGICK_PATH = "/usr/bin"
+
+
+h3. config/routes.rb
+
+add:
+
+bc.. map.resources :items do |item|
+  item.resources :galleries do |gallery|
+    gallery.resources :images
+  end
+
+  item.namespace(:aadgadmin, :namespace => '') do |aadgadmin|
+    aadgadmin.resources :galleries do |gallery|
+      gallery.resources :dimensions
+      gallery.resources :images
+    end
+    aadgadmin.resources :dimensions do |dimension|
+      dimension.resources :galleries
+    end
+  end
+end
+
+map.namespace :aadgadmin do |aadgadmin|
+  aadgadmin.resources :dimensions do |dimension|
+    dimension.resources :galleries
+  end
+end
+
+
+p. Copyright (c) 2010 Matthew R. Dale, released under the MIT license

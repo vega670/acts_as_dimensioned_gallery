@@ -1,5 +1,4 @@
 class ImagesController < AadgController
-  layout 'aadg'
   
   before_filter :find_gallery
   

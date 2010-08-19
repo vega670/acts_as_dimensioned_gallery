@@ -1,6 +1,4 @@
 class GalleriesController < AadgController
-
-  layout 'aadg'
   
   def index
     @galleries = @holder.galleries

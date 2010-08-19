@@ -1,5 +1,7 @@
 class AadgController < ActionController::Base
 
+  layout 'aadg'
+
   before_filter :find_holder
 
   def find_gallery

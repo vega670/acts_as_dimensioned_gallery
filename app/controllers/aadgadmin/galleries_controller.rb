@@ -1,6 +1,4 @@
 class Aadgadmin::GalleriesController < Aadgadmin::AadgController
-
-  layout 'aadg_admin'
   
   def index
     if params[:dimension_id]

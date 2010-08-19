@@ -15,7 +15,7 @@
   <%= f.text_field :width %>
 </p>
 <p id="aspect_input">
-  <%= f.label 'Aspect ratio' %>
+  <%= f.label :aspect %>
   <%= f.text_field :aspect %>
 </p>
 <p id="resize_input">
@@ -31,6 +31,7 @@
 </p>
 <% end %>
 <script type="text/javascript">
+// <!--
   function updateDimensionForm(width, height, aspect, resize, crop, widthBlock,
                                heightBlock, aspectBlock, resizeBlock, cropBlock){
     if(height.value != '' || width.value != ''){
@@ -103,4 +104,5 @@
   }
 
   window.onload = startInterval;
+// -->
 </script>
