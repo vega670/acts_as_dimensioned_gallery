@@ -1,5 +1,4 @@
 class AadgController < ActionController::Base
-#  include ActionController::UrlWriter
 
   before_filter :find_holder
 

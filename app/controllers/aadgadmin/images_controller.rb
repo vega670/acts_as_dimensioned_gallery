@@ -4,23 +4,15 @@ class Aadgadmin::ImagesController < Aadgadmin::AadgController
   before_filter :find_gallery
   
   def index
-    if @gallery
-      @images = @gallery.images
-    else
-      @images = Image.all
-    end
+    @images = @gallery.images
   end
 
   def show
-    @image = Image.find(params[:id])
+    @image = @gallery.images.find(params[:id])
   end
 
   def new
-    if @gallery
-      @image = @gallery.images.new
-    else
-      @image = Image.new
-    end
+    @image = @gallery.images.new
   end
   
   def create
@@ -28,11 +20,7 @@ class Aadgadmin::ImagesController < Aadgadmin::AadgController
     
     respond_to do |format|
       if @image.save
-        if @gallery
-          format.html { redirect_to url_for([@holder, @gallery]) }
-        else
-          format.html { redirect_to(@image) }
-        end
+        format.html { redirect_to url_for([@holder, :aadgadmin, @gallery]) }
       else
         format.html {render :action => "new" }
       end
@@ -44,11 +32,7 @@ class Aadgadmin::ImagesController < Aadgadmin::AadgController
     @image.destroy
     
     respond_to do |format|
-      if @gallery
-        format.html { redirect_to url_for([@holder, @gallery]) }
-      else
-        format.html { redirect_to(@image) }
-      end
+      format.html { redirect_to url_for([@holder, :aadgadmin, @gallery]) }
     end
   end
 end

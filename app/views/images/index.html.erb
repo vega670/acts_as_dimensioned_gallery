@@ -1,5 +1,6 @@
 <h1>Images</h1>
 <% @images.each do |image| %>
   <%= image.name %><br />
-  <%= image.tag("original") %><br />
+  <%= image.tag(Image.unaltered_file) %><br />
 <% end %>
+<%= link_to 'Back', @gallery %>

@@ -3,76 +3,50 @@ class Aadgadmin::GalleriesController < Aadgadmin::AadgController
   layout 'aadg_admin'
   
   def index
-    if @holder
-      @galleries = @holder.galleries
-    elsif params[:dimension_id]
-      dimension = Dimension.find(params[:dimension_id])
-      @galleries = dimension.galleries
+    if params[:dimension_id]
+      @dimension = Dimension.find(params[:dimension_id])
+      @galleries = @dimension.galleries
     else
-      @galleries = Gallery.all
-    end
-    
-    respond_to do |format|
-      format.html
+      @galleries = @holder.galleries
     end
   end
   
   
   def show
-    @gallery = Gallery.find(params[:id])
-    
-    respond_to do |format|
-      format.html
-    end
+    @gallery = @holder.galleries.find(params[:id])
   end
   
 
   def new
-    if @holder
-      @gallery = @holder.galleries.new
-    else
-      @gallery = Gallery.new
-    end
-    
-    respond_to do |format|
-      format.html
-    end
+    @gallery = @holder.galleries.new
   end
 
 
   def edit
-    @gallery = Gallery.find(params[:id])
-    
-    respond_to do |format|
-      format.html
-    end
+    @gallery = @holder.galleries.find(params[:id])
   end
 
 
   def create
-    if @holder
-      gallery = @holder.galleries.create(params[:gallery])
-      
-      respond_to do |format|
-        format.html { redirect_to gallery_path(gallery) }
-      end
-    else
-      @gallery = Gallery.create(params[:gallery])
-      
-      respond_to do |format|
-        format.html { redirect_to galleries_path }
+    @gallery = @holder.galleries.create(params[:gallery])
+
+    respond_to do |format|
+      if @gallery.save
+        format.html { redirect_to url_for([@holder, :aadgadmin, @gallery]) }
+      else
+        format.html { render :action => 'new'}
       end
     end
   end
 
 
   def update
-    @gallery = Gallery.find(params[:id])
+    @gallery = @holder.galleries.find(params[:id])
 
     respond_to do |format|
       if @gallery.update_attributes(params[:gallery])
         flash[:notice] = "Gallery successfully updated."
-        format.html { redirect_to url_for([@holder, @gallery]) }
+        format.html { redirect_to url_for([@holder, :aadgadmin, @gallery]) }
       else
         format.html { render :action => 'edit' }
       end
@@ -81,24 +55,18 @@ class Aadgadmin::GalleriesController < Aadgadmin::AadgController
 
 
   def destroy
-    gallery = Gallery.find(params[:id])
-    gallery.destroy
+    @gallery = @holder.galleries.find(params[:id])
+    @gallery.destroy
 
     respond_to do |format|
-
-      if @holder
-        format.html { redirect_to :controller => @holder.class.to_s.pluralize.downcase, :action => :show, :id => @holder.id }
-      else
-        format.html { redirect_to galleries_path }
-      end
-
+      format.html { redirect_to url_for([@holder, :aadgadmin, :galleries]) }
     end
   end
 
 
 
   def set_gallery_image
-    gallery = Gallery.find(params[:gallery_id])
+    gallery = @holder.galleries.find(params[:gallery_id])
     gallery.gallery_image_id = params[:image_id]
     gallery.save
     

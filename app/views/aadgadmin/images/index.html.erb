@@ -2,4 +2,5 @@
 <% @images.each do |image| %>
   <%= image.name %><br />
   <%= image.tag("original") %><br />
+  <%= button_to 'Delete', aadgadmin_image_path(image), :method => :delete, :confirm => "Are you sure?" %>
 <% end %>
