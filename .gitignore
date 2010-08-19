@@ -8,4 +8,4 @@ nbproject
 *.log
 *.pid
 database.yml
-
+test
