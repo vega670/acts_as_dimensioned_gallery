@@ -8,8 +8,8 @@ time and will retroactively apply all dimensions to previously uploaded images
 as well as all new images. Dimensions can be managed as gallery-specific or
 independently and existing dimensions can be added to any gallery.
 
-!!!WARNING!!! ActsAsDimensionedGallery currently has a number of bugs and very
-              basic views. Use with caution.
+!!!WARNING!!! ActsAsDimensionedGallery currently has very basic views and has
+              not been extensively tested. Use with caution.
 
 Usage
 =====
@@ -62,8 +62,7 @@ CREATE TABLE `gdjoins` (
     PRIMARY KEY (`id`)
 );
 
-2. In all models you want to add galleries to, call
-acts_as_dimensioned_gallery.
+2. In all models you want to add galleries to, call 'acts_as_dimensioned_gallery'.
   a) When creating links in pages rendered by controllers in the plugin app, the
      default behavior is to create polymorphic routes. To disable this, include
      ":automatic_polymorphic_routes => :false" after acts_as_dimensioned_gallery.
@@ -76,12 +75,32 @@ your Rails app.
 'IMAGE_MAGICK_PATH = "/path/to/image/magick"' (the path will usually be
 '/usr/bin' on Linux or something like 'C:\Program Files\ImageMagick' on Windows).
 
-5. Configure the routes in config/routes.rb if you want to use
-the included management views.
+5. Add the following to the resources you would like to add galleries to in routes.rb:
+  map.resources :your_resource do |your_resource|
+    your_resource.resources :galleries do |gallery|
+      gallery.resources :images
+    end
+
+    your_resource.namespace(:aadgadmin, :namespace => '') do |aadgadmin|
+      aadgadmin.resources :galleries do |gallery|
+        gallery.resources :dimensions
+        gallery.resources :images
+      end
+      aadgadmin.resources :dimensions do |dimension|
+        dimension.resources :galleries
+      end
+    end
+  end
+
+  map.namespace :aadgadmin do |aadgadmin|
+    aadgadmin.resources :dimensions do |dimension|
+      dimension.resources :galleries
+    end
+  end
 
 
-Example
-=======
+Example for resource "Item":
+==============================
 
 ## Item.rb ###################
 
@@ -100,31 +119,33 @@ IMAGE_MAGICK_PATH = "/usr/bin"
 ##############################
 
 
-Example of nested galleries (myurl.com/items/1/galleries):
-
 ## config/routes.rb ##########
 add:
 
-map.resources :items, :has_many => :galleries
-map.resources :galleries do |gallery|
-  gallery.resources :dimensions
-  gallery.resources :images
+map.resources :items do |item|
+  item.resources :galleries do |gallery|
+    gallery.resources :images
+  end
+
+  item.namespace(:aadgadmin, :namespace => '') do |aadgadmin|
+    aadgadmin.resources :galleries do |gallery|
+      gallery.resources :dimensions
+      gallery.resources :images
+    end
+    aadgadmin.resources :dimensions do |dimension|
+      dimension.resources :galleries
+    end
+  end
+end
+
+map.namespace :aadgadmin do |aadgadmin|
+  aadgadmin.resources :dimensions do |dimension|
+    dimension.resources :galleries
+  end
 end
 
 ##############################
 
-
-Example of non-nested galleries (myurl.com/galleries):
-
-## config/routes.rb ##########
-add:
-
-map.resources :galleries do |gallery|
-  gallery.resources :dimensions
-  gallery.resources :images
-end
-
-##############################
 
 
 Copyright (c) 2010 Matthew R. Dale, released under the MIT license
