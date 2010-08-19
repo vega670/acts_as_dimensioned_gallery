@@ -8,7 +8,7 @@ h2. Usage
 
 Follow these steps to install and configure the plugin:
 
-p. 1. Create the four required tables in your database. This is MySQL example code.
+1. Create the four required tables in your database. This is MySQL example code.
 
 bc.. CREATE TABLE `galleries` (
     `id` INT(11) NOT NULL auto_increment,
@@ -22,7 +22,7 @@ bc.. CREATE TABLE `galleries` (
     PRIMARY KEY (`id`)
 );
 
-CREATE TABLE `images` (
+bc. CREATE TABLE `images` (
     `id` INT(11) NOT NULL auto_increment,
     `name` VARCHAR(255) default NULL,
     `description` TEXT default NULL,
@@ -35,7 +35,7 @@ CREATE TABLE `images` (
     PRIMARY KEY (`id`)
 );
 
-CREATE TABLE `dimensions` (
+bc. CREATE TABLE `dimensions` (
     `id` INT(11) NOT NULL auto_increment,
     `name` VARCHAR(255) default NULL,
     `height` INT(11) default NULL,
@@ -48,7 +48,7 @@ CREATE TABLE `dimensions` (
     PRIMARY KEY (`id`)
 );
 
-CREATE TABLE `gdjoins` (
+bc. CREATE TABLE `gdjoins` (
     `id` INT(11) NOT NULL auto_increment,
     `gallery_id` INT(11) default NULL,
     `dimension_id` INT(11) default NULL,
@@ -56,7 +56,7 @@ CREATE TABLE `gdjoins` (
 );
 
 
-p. 2. In all models you want to add galleries to, call @acts_as_dimensioned_gallery@.
+2. In all models you want to add galleries to, call @acts_as_dimensioned_gallery@.
 
 * When creating links in pages rendered by controllers in the plugin app, the default behavior is to create polymorphic routes. To disable this, include: @:automatic_polymorphic_routes => :false@ after @acts_as_dimensioned_gallery@
 
@@ -66,55 +66,12 @@ p. 2. In all models you want to add galleries to, call @acts_as_dimensioned_gall
 
 5. Add the following to the resources you would like to add galleries to in routes.rb:
 
-bc.. map.resources :your_resource do |your_resource|
-    your_resource.resources :galleries do |gallery|
-      gallery.resources :images
-    end
-
-    your_resource.namespace(:aadgadmin, :namespace => '') do |aadgadmin|
-      aadgadmin.resources :galleries do |gallery|
-        gallery.resources :dimensions
-        gallery.resources :images
-      end
-      aadgadmin.resources :dimensions do |dimension|
-        dimension.resources :galleries
-      end
-    end
-  end
-
-  map.namespace :aadgadmin do |aadgadmin|
-    aadgadmin.resources :dimensions do |dimension|
-      dimension.resources :galleries
-    end
-  end
-
-
-h2. Example for resource "Item":
-
-h3. Item.rb
-
-bc.. class Item < ActiveRecord::Base
-    acts_as_dimensioned_gallery
-end
-
-
-h3. config/environment.rb
-
-add:
-
-bc.. IMAGE_MAGICK_PATH = "/usr/bin"
-
-
-h3. config/routes.rb
-
-add:
-
-bc.. map.resources :items do |item|
-  item.resources :galleries do |gallery|
+bc. map.resources :your_resource do |your_resource|
+  your_resource.resources :galleries do |gallery|
     gallery.resources :images
   end
 
-  item.namespace(:aadgadmin, :namespace => '') do |aadgadmin|
+bc.  your_resource.namespace(:aadgadmin, :namespace => '') do |aadgadmin|
     aadgadmin.resources :galleries do |gallery|
       gallery.resources :dimensions
       gallery.resources :images
@@ -125,11 +82,54 @@ bc.. map.resources :items do |item|
   end
 end
 
-map.namespace :aadgadmin do |aadgadmin|
+bc. map.namespace :aadgadmin do |aadgadmin|
   aadgadmin.resources :dimensions do |dimension|
     dimension.resources :galleries
   end
 end
 
 
-p. Copyright (c) 2010 Matthew R. Dale, released under the MIT license
+h2. Example for resource "Item":
+
+h3. Item.rb
+
+bc. class Item < ActiveRecord::Base
+    acts_as_dimensioned_gallery
+end
+
+
+h3. config/environment.rb
+
+add:
+
+bc. IMAGE_MAGICK_PATH = "/usr/bin"
+
+
+h3. config/routes.rb
+
+add:
+
+bc. map.resources :items do |item|
+  item.resources :galleries do |gallery|
+    gallery.resources :images
+  end
+
+bc.   item.namespace(:aadgadmin, :namespace => '') do |aadgadmin|
+    aadgadmin.resources :galleries do |gallery|
+      gallery.resources :dimensions
+      gallery.resources :images
+    end
+    aadgadmin.resources :dimensions do |dimension|
+      dimension.resources :galleries
+    end
+  end
+end
+
+bc. map.namespace :aadgadmin do |aadgadmin|
+  aadgadmin.resources :dimensions do |dimension|
+    dimension.resources :galleries
+  end
+end
+
+
+Copyright (c) 2010 Matthew R. Dale, released under the MIT license
