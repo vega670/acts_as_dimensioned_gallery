@@ -55,7 +55,6 @@ CREATE TABLE `gdjoins` (
     PRIMARY KEY (`id`)
 );
 
-
 p. 2. In all models you want to add galleries to, call @acts_as_dimensioned_gallery@.
 
 When creating links in pages rendered by controllers in the plugin app, the default behavior is to create polymorphic routes. To disable this, include: @:automatic_polymorphic_routes => :false@ after @acts_as_dimensioned_gallery@
@@ -88,7 +87,6 @@ map.namespace :aadgadmin do |aadgadmin|
   end
 end
 
-
 h2. Example for resource "Item":
 
 h3. Item.rb
@@ -103,7 +101,6 @@ h3. config/environment.rb
 add:
 
 bc. IMAGE_MAGICK_PATH = "/usr/bin"
-
 
 h3. config/routes.rb
 
@@ -130,6 +127,5 @@ map.namespace :aadgadmin do |aadgadmin|
     dimension.resources :galleries
   end
 end
-
 
 p. Copyright (c) 2010 Matthew R. Dale, released under the MIT license
