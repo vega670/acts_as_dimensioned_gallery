@@ -1,11 +1,11 @@
 class GalleriesController < AadgController
   
   def index
-    @galleries = @holder.galleries
+    @galleries = @holder_url.galleries
   end
 
 
   def show
-    @gallery = @holder.galleries.find(params[:id])
+    @gallery = @holder_url.galleries.find(params[:id])
   end
 end

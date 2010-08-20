@@ -1,9 +1,3 @@
+<%= link_to 'Back', @gallery %><br />
 <h1><%= @image.name %></h1>
-<%= Image.unaltered_file.capitalize %>:
-<%= @image.tag(Image.unaltered_file) %><br />
-
-<% @gallery.dimensions.each do |dim| %>
-  <%= "#{dim.name}: #{@image.tag(dim.name)}" %><br />
-<% end %>
-
-<%= link_to 'Back', @gallery %>
+<%= @image.tag(Image.unaltered_file) %>

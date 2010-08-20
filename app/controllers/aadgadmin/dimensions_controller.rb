@@ -39,7 +39,7 @@ class Aadgadmin::DimensionsController < Aadgadmin::AadgController
             flash[:notice] = "Dimension already added to this gallery."
           end
 
-          format.html { redirect_to url_for([@holder, :aadgadmin, @gallery])}
+          format.html { redirect_to url_for([@holder_url, :aadgadmin, @gallery])}
         end
       else
         @dimension = @gallery.dimensions.build(params[:dimension])
@@ -48,7 +48,7 @@ class Aadgadmin::DimensionsController < Aadgadmin::AadgController
           if @dimension.save
             @gallery.dimensions << @dimension
             flash[:notice] = "Dimension successfully created."
-            format.html { redirect_to url_for([@holder, :aadgadmin, @gallery]) }
+            format.html { redirect_to url_for([@holder_url, :aadgadmin, @gallery]) }
           else
             @dimensions = Dimension.all
             format.html { render :action => 'new' }
@@ -82,7 +82,7 @@ class Aadgadmin::DimensionsController < Aadgadmin::AadgController
       if @dimension.update_attributes(params[:dimension])
         flash[:notice] = "Dimension successfully updated."
         if @gallery
-          format.html { redirect_to url_for([@holder, :aadgadmin, @gallery]) }
+          format.html { redirect_to url_for([@holder_url, :aadgadmin, @gallery]) }
         else
           format.html { redirect_to url_for([:aadgadmin, :dimensions]) }
         end
@@ -113,7 +113,7 @@ class Aadgadmin::DimensionsController < Aadgadmin::AadgController
     
     respond_to do |format|
       if @gallery
-        format.html { redirect_to url_for([@holder, :aadgadmin, @gallery]) }
+        format.html { redirect_to url_for([@holder_url, :aadgadmin, @gallery]) }
       else
         format.html { redirect_to aadgadmin_dimensions_path }
       end

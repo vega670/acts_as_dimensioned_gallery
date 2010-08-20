@@ -5,32 +5,32 @@ class Aadgadmin::GalleriesController < Aadgadmin::AadgController
       @dimension = Dimension.find(params[:dimension_id])
       @galleries = @dimension.galleries
     else
-      @galleries = @holder.galleries
+      @galleries = @holder_url.galleries
     end
   end
   
   
   def show
-    @gallery = @holder.galleries.find(params[:id])
+    @gallery = @holder_url.galleries.find(params[:id])
   end
   
 
   def new
-    @gallery = @holder.galleries.new
+    @gallery = @holder_url.galleries.new
   end
 
 
   def edit
-    @gallery = @holder.galleries.find(params[:id])
+    @gallery = @holder_url.galleries.find(params[:id])
   end
 
 
   def create
-    @gallery = @holder.galleries.create(params[:gallery])
+    @gallery = @holder_url.galleries.create(params[:gallery])
 
     respond_to do |format|
       if @gallery.save
-        format.html { redirect_to url_for([@holder, :aadgadmin, @gallery]) }
+        format.html { redirect_to url_for([@holder_url, :aadgadmin, @gallery]) }
       else
         format.html { render :action => 'new'}
       end
@@ -39,12 +39,12 @@ class Aadgadmin::GalleriesController < Aadgadmin::AadgController
 
 
   def update
-    @gallery = @holder.galleries.find(params[:id])
+    @gallery = @holder_url.galleries.find(params[:id])
 
     respond_to do |format|
       if @gallery.update_attributes(params[:gallery])
         flash[:notice] = "Gallery successfully updated."
-        format.html { redirect_to url_for([@holder, :aadgadmin, @gallery]) }
+        format.html { redirect_to url_for([@holder_url, :aadgadmin, @gallery]) }
       else
         format.html { render :action => 'edit' }
       end
@@ -53,18 +53,18 @@ class Aadgadmin::GalleriesController < Aadgadmin::AadgController
 
 
   def destroy
-    @gallery = @holder.galleries.find(params[:id])
+    @gallery = @holder_url.galleries.find(params[:id])
     @gallery.destroy
 
     respond_to do |format|
-      format.html { redirect_to url_for([@holder, :aadgadmin, :galleries]) }
+      format.html { redirect_to url_for([@holder_url, :aadgadmin, :galleries]) }
     end
   end
 
 
 
   def set_gallery_image
-    gallery = @holder.galleries.find(params[:gallery_id])
+    gallery = @holder_url.galleries.find(params[:gallery_id])
     gallery.gallery_image_id = params[:image_id]
     gallery.save
     

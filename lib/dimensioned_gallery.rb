@@ -22,7 +22,28 @@ module ActiveRecord
       end
 
       module InstanceMethods
+        def find_ancestry
+          ths = self
+          holders = Array.new
+          holders << ths
+          
+          begin
+            columns = ths.attribute_names
 
+            nxt = nil
+            columns.each do |column|
+              if /_id$/.match(column)
+                klass = column.slice!(/_id$/).capitalize.constantize
+                nxt = klass.find(ths.send(column.to_sym))
+                holders << nxt
+                ths = nxt
+                break
+              end
+            end
+          end while nxt
+
+          return holders
+        end
       end
     end
   end

@@ -19,7 +19,7 @@ class Aadgadmin::ImagesController < Aadgadmin::AadgController
     
     respond_to do |format|
       if @image.save
-        format.html { redirect_to url_for([@holder, :aadgadmin, @gallery]) }
+        format.html { redirect_to url_for([@holder_url, :aadgadmin, @gallery]) }
       else
         format.html {render :action => "new" }
       end
@@ -31,7 +31,7 @@ class Aadgadmin::ImagesController < Aadgadmin::AadgController
     @image.destroy
     
     respond_to do |format|
-      format.html { redirect_to url_for([@holder, :aadgadmin, @gallery]) }
+      format.html { redirect_to url_for([@holder_url, :aadgadmin, @gallery]) }
     end
   end
 end
