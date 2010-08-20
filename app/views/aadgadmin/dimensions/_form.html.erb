@@ -1,56 +1,78 @@
-<% form_for([@holder, :aadgadmin, @gallery, @dimension]) do |f| %>
-<p>
-  <%= f.error_messages %>
-</p>
-<p>
-  <%= f.label :name %>
-  <%= f.text_field :name %>
-</p>
-<p id="height_input">
-  <%= f.label :height %>
-  <%= f.text_field :height %>
-</p>
-<p id="width_input">
-  <%= f.label :width %>
-  <%= f.text_field :width %>
-</p>
-<p id="aspect_input">
-  <%= f.label :aspect %>
-  <%= f.text_field :aspect %>
-</p>
-<p id="resize_input">
-  <%= f.label :resize? %>
-  <%= f.check_box :resize %>
-</p>
-<p id="crop_input">
-  <%= f.label :crop? %>
-  <%= f.check_box :crop %>
-</p>
-<p>
-  <%= f.submit 'Save' %>
-</p>
-<% end %>
+<div id="leftSide">
+  <fieldset>
+    <legend>Dimension</legend>
+    <% form_for([@holder, :aadgadmin, @gallery, @dimension]) do |f| %>
+    <p>
+      <%= f.error_messages %>
+    </p>
+    <%= f.label :name, 'Dimension Name' %>
+    <div class="div_texbox"><%= f.text_field :name, :class => 'textbox' %></div>
+
+    <div id="width_block">
+    <%= f.label :width, 'Width (px)' %>
+    <div class="div_texbox"><%= f.text_field :width, :class => 'textbox' %></div>
+    </div>
+
+    <div id="height_block">
+    <%= f.label :height, 'Height (px)' %>
+    <div class="div_texbox"><%= f.text_field :height, :class => 'textbox' %></div>
+    </div>
+
+    <div id="aspect_block">
+    <%= f.label :aspect, 'Aspect ratio' %>
+    <div class="div_texbox"><%= f.text_field :aspect, :class => 'textbox' %></div>
+    </div>
+
+    <div id="resize_block">
+    <%= f.label :resize, 'Resize Image' %>
+    <div class="div_texbox"><%= f.check_box :resize %></div>
+    </div>
+
+    <div id="crop_block">
+    <%= f.label :crop, 'Crop Image' %>
+    <div class="div_texbox"><%= f.check_box :crop %></div>
+    </div>
+    
+    <div class="button_div"><%= f.submit 'Save', :class => 'buttons' %></div>
+    <% end %>
+  </fieldset>
+</div>
+<div id="rightSide">
+  <p>
+    The Dimension form will automatically disable fields that are calculable from the given information or that create an ambiguous Dimension.<br /><br />
+    This is normal behavior and does not indicate a problem.
+  </p>
+  <% if @gallery %>
+    <%= link_to 'Back', aadgadmin_gallery_path(@gallery) %>
+  <% else %>
+    <%= link_to 'Back', aadgadmin_dimensions_path %>
+  <% end %>
+</div>
+
 <script type="text/javascript">
 // <!--
   function updateDimensionForm(width, height, aspect, resize, crop, widthBlock,
                                heightBlock, aspectBlock, resizeBlock, cropBlock){
-    if(height.value != '' || width.value != ''){
-      if(height.value != '' && width.value != ''){
+    if((!height.disabled && height.value != '') || (!width.disabled && width.value != '')){
+      if((!height.disabled && height.value != '') && (!width.disabled && width.value != '')){
         disableElement(aspectBlock, aspect);
         enableElement(cropBlock, crop);
         enableElement(resizeBlock, resize);
+        aspect.value = width.value / height.value;
       }else{
-        if(aspect.value != ''){
-          if(height.value != ''){
+        if(!aspect.disabled && aspect.value != ''){
+          if(!height.disabled && height.value != ''){
             disableElement(widthBlock, width);
+            width.value = Math.round(aspect.value * height.value);
           }else{
             disableElement(heightBlock, height);
+            height.value = Math.round(width.value / aspect.value);
           }
           enableElement(resizeBlock, resize);
         }else{
-          if(crop.valueOf().checked == true){
+          if(!crop.disabled && crop.valueOf().checked == true){
             disableElement(resizeBlock, resize);
-          }else if(resize.valueOf().checked == true){
+          }else if(!resize.disabled && resize.valueOf().checked == true){
             disableElement(cropBlock, crop);
           }else{
             enableElement(resizeBlock, resize);
@@ -62,7 +84,7 @@
         enableElement(aspectBlock, aspect);
       }
     }else{
-      if(aspect.value != ''){
+      if(!aspect.disabled && aspect.value != ''){
         disableElement(resizeBlock, resize);
       }else{
         enableElement(resizeBlock, resize);
@@ -74,16 +96,19 @@
   }
 
   function disableElement(block, input){
-    block.style.background = "#AAAAAA";
-    input.style.background = "#AAAAAA";
+    block.style.background = "#E6E6E6";
+    input.style.background = "#E6E6E6";
     input.valueOf().checked = false;
     input.disabled = true;
   }
 
   function enableElement(block, input){
-    block.style.background = "";
-    input.style.background = "";
-    input.disabled = false;
+    if(input.disabled){
+      block.style.background = "";
+      input.style.background = "";
+      input.disabled = false;
+      input.value = '';
+    }
   }
 
   function startInterval(){
@@ -93,11 +118,11 @@
     var resize = document.getElementById("dimension_resize");
     var crop = document.getElementById("dimension_crop");
 
-    var widthBlock = document.getElementById("width_input");
-    var heightBlock = document.getElementById("height_input");
-    var aspectBlock = document.getElementById("aspect_input");
-    var resizeBlock = document.getElementById("resize_input");
-    var cropBlock = document.getElementById("crop_input");
+    var widthBlock = document.getElementById("width_block");
+    var heightBlock = document.getElementById("height_block");
+    var aspectBlock = document.getElementById("aspect_block");
+    var resizeBlock = document.getElementById("resize_block");
+    var cropBlock = document.getElementById("crop_block");
 
     window.setInterval( function() { updateDimensionForm(width, height, aspect,
       resize, crop, widthBlock, heightBlock, aspectBlock, resizeBlock, cropBlock); }, 100);

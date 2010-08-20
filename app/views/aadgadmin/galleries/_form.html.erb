@@ -1,16 +1,20 @@
-<% form_for([@holder, :aadgadmin, @gallery]) do |f| %>
-<p>
-	<%= f.error_messages %>
-</p>
-<p>
-	<%= f.label :name %>
-	<%= f.text_field :name %>
-</p>
-<p>
-	<%= f.label :description %>
-	<%= f.text_area :description %>
-</p>
-<p>
-	<%= f.submit 'Save' %>
-</p>
-<% end %>
+<div id="leftSide">
+  <fieldset>
+    <legend>Gallery</legend>
+    <% form_for([@holder, :aadgadmin, @gallery]) do |f| %>
+    <p>
+      <%= f.error_messages %>
+    </p>
+      <%= f.label :name %>
+      <div class="div_texbox"><%= f.text_field :name, :class => 'textbox' %></div>
+
+      <%= f.label :description %>
+      <div class="div_textarea"><%= f.text_area :description, :rows => 7, :class => 'textbox' %></div>
+
+      <div class="button_div"><%= f.submit 'Save', :class => 'buttons' %></div>
+    <% end %>
+  </fieldset>
+</div>
+<div id="rightSide">
+  <%= link_to 'Back', aadgadmin_galleries_path %>
+</div>

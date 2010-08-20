@@ -41,7 +41,7 @@ class Dimension < ActiveRecord::Base
           image.create_with_dimension(self)
         end
       end
-    else
+    elsif (dimension.name != self.name)
       gdjoins.each do |gdjoin|
         gallery = Gallery.find(gdjoin.gallery_id)
         gallery.images.each do |image|

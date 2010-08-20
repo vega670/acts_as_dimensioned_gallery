@@ -1,18 +1,16 @@
-<h1>New dimension</h1>
-<% if @gallery %>
-  <h2>Add existing:</h2>
-  <% form_for([@holder, :aadgadmin, @gallery, @dimension]) do %>
-    <%= collection_select(:dimension, :id, @dimensions, :id, :name) %>
-    <%= submit_tag 'Select' %>
-  <% end %>
-  <br />
-  <h2>Add new:</h2>
-<% end %>
-
+<div id="top">
+  <h1>Please enter the desired values</h1>
+</div>
+<div id="leftSide">
+  <fieldset>
+    <legend>Add Existing Dimension</legend>
+      <% if @gallery %>
+        <% form_for([@holder, :aadgadmin, @gallery, @dimension]) do %>
+          <%= label :dimension_id, 'Choose one' %>
+          <div class="div_texbox"><%= collection_select(:dimension, :id, @dimensions, :id, :name) %></div>
+          <div class="button_div"><%= submit_tag 'Select', :class => 'buttons' %></div>
+        <% end %>
+      <% end %>
+  </fieldset>
+</div>
 <%= render :partial => "form" %>
-
-<% if @gallery %>
-  <%= link_to 'Back', aadgadmin_gallery_path(@gallery) %>
-<% else %>
-  <%= link_to 'Back', aadgadmin_dimensions_path %>
-<% end %>
