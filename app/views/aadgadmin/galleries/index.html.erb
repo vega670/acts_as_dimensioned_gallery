@@ -1,10 +1,10 @@
 <% @galleries.each do |gallery| %>
-	<div class="gallery">
-		<%= link_to gallery.name, aadgadmin_gallery_path(gallery) %><br />
-		Description: <%= gallery.description %><br />
-
-		<%= link_to 'Edit', edit_aadgadmin_gallery_path(gallery) %> |
-                <%= link_to 'Delete', {:controller => :galleries, :action => :destroy, :id => gallery.id}, :method => :delete, :confirm => "Are you sure?" %><br />
-                <br />
-	</div>
+  <div class="gallery">
+    <%= link_to gallery.name, aadgadmin_gallery_path(gallery) %><br />
+    Description: <%= gallery.description %><br />
+    <%= link_to 'Edit', edit_aadgadmin_gallery_path(gallery) %> |
+    <%= link_to 'Delete', {:controller => :galleries, :action => :destroy, :id => gallery.id}, :method => :delete, :confirm => "Are you sure?" %><br />
+  <br />
+</div>
+<%= link_to 'Back', holder_path %>
 <% end %>

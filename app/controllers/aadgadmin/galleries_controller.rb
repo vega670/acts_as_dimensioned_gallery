@@ -11,7 +11,18 @@ class Aadgadmin::GalleriesController < Aadgadmin::AadgController
   
   
   def show
-    @gallery = @holder_url.galleries.find(params[:id])
+    if params[:dimension_id]
+      @dimension = Dimension.find(params[:dimension_id])
+      @gallery = @dimension.galleries.find(params[:id])
+    else
+      @gallery = @holder_url.galleries.find(params[:id])
+    end
+    if @gallery.gallery_dimension_id
+      @gallery_dimension = Dimension.find(@gallery.gallery_dimension_id)
+    end
+    if @gallery.gallery_image_id
+      @gallery_image = Image.find(@gallery.gallery_image_id)
+    end
   end
   
 
@@ -59,15 +70,5 @@ class Aadgadmin::GalleriesController < Aadgadmin::AadgController
     respond_to do |format|
       format.html { redirect_to url_for([@holder_url, :aadgadmin, :galleries]) }
     end
-  end
-
-
-
-  def set_gallery_image
-    gallery = @holder_url.galleries.find(params[:gallery_id])
-    gallery.gallery_image_id = params[:image_id]
-    gallery.save
-    
-    render :text => 'Image set as gallery image.'
   end
 end

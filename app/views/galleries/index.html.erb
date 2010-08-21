@@ -2,7 +2,7 @@
 	<div class="gallery">
 		<%= link_to gallery.name, gallery %><br />
 		Description: <%= gallery.description %><br />
-                <%= link_to 'Manage Gallery', work_aadgadmin_gallery_path(@holder, gallery) %>
+                <%= link_to 'Manage Gallery', aadgadmin_gallery_path(gallery) %>
                 <br /><br />
 	</div>
 <% end %>

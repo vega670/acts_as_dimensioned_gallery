@@ -28,16 +28,20 @@ module ActiveRecord
           holders << ths
           
           begin
-            columns = ths.attribute_names
+            attributes = ths.attribute_names
 
             nxt = nil
-            columns.each do |column|
-              if /_id$/.match(column)
-                klass = column.slice!(/_id$/).capitalize.constantize
-                nxt = klass.find(ths.send(column.to_sym))
-                holders << nxt
-                ths = nxt
-                break
+            attributes.each do |attribute|
+              if /_id$/.match(attribute)
+                begin
+                  klass = attribute.slice!(/_id$/).capitalize.constantize
+                  nxt = klass.find(ths.send(attribute.to_sym))
+                  holders << nxt
+                  ths = nxt
+                rescue NameError
+                else
+                  break
+                end
               end
             end
           end while nxt

@@ -32,7 +32,7 @@ class Gallery < ActiveRecord::Base
 
   def gallery_image_tag(dim_name)
     if self.gallery_image_id
-      image = gallery.images.find(self.gallery_image_id)
+      image = self.images.find(self.gallery_image_id)
      return image.tag(dim_name)
    else
      return nil

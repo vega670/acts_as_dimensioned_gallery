@@ -10,17 +10,14 @@
   </div>
 
   <h2>Images</h2>
-  <div class="images">
+  <% if @gallery_dimension %>
     <% @gallery.images.each do |image| %>
-      Name: <%= image.name %><br />
-      <% @gallery.dimensions.each do |dim| %>
-        <%= image.tag(dim.name) %>
-      <% end %>
-      <%= link_to 'Show', aadgadmin_gallery_image_path(@gallery, image) %> |
-      <%= link_to 'Delete', aadgadmin_gallery_image_path(@gallery, image), :confirm => "Are you sure?", :method => :delete %><br />
-      <br />
+      <div class="image">
+        <%= link_to image.tag(@gallery_dimension.name), aadgadmin_gallery_image_path(@gallery, image) %>
+      </div>
 
     <% end %>
-    <%= link_to 'New image', new_aadgadmin_gallery_image_path(@gallery) %>
-  </div>
+  <% end %>
+  <div style="clear:both;"></div>
+  <%= link_to 'New image', new_aadgadmin_gallery_image_path(@gallery) %>
 </div>

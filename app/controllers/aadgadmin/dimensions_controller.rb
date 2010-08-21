@@ -119,4 +119,15 @@ class Aadgadmin::DimensionsController < Aadgadmin::AadgController
       end
     end
   end
+
+  def set_gallery_dimension
+    gallery = Gallery.find(params[:gallery_id])
+    gallery.gallery_dimension_id = params[:id]
+
+    if gallery.save
+      render :text => 'Dimension set as gallery dimension.'
+    else
+      render :text => 'An error occured while setting gallery dimension.'
+    end
+  end
 end

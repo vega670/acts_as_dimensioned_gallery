@@ -34,4 +34,15 @@ class Aadgadmin::ImagesController < Aadgadmin::AadgController
       format.html { redirect_to url_for([@holder_url, :aadgadmin, @gallery]) }
     end
   end
+
+  def set_gallery_image
+    gallery = Gallery.find(params[:gallery_id])
+    gallery.gallery_image_id = params[:id]
+
+    if gallery.save
+      render :text => 'Image set as gallery image.'
+    else
+      render :text => 'An error occured while setting gallery image.'
+    end
+  end
 end

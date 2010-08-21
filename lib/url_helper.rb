@@ -79,8 +79,23 @@ module ActionView
         return url_for(holder(gallery)) + '/aadgadmin/galleries/' + gallery.id.to_s + '/edit'
       end
 
+      def holder_path
+        if @holder_url
+          return url_for([@holder_url])
+        else
+          return url_for(holder())
+        end
+      end
+
       private
-        def holder(gallery)
+        def holder(gallery = nil)
+          if !gallery
+            if @gallery
+              gallery = @gallery
+            else
+              return nil
+            end
+          end
           klass = gallery.holder_type.singularize.capitalize.constantize
           holder = klass.find(gallery.holder_id)
           return holder.find_ancestry

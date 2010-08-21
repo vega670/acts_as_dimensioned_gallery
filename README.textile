@@ -17,6 +17,7 @@ bc.. CREATE TABLE `galleries` (
     `holder_id` INT(11) default NULL,
     `holder_type` VARCHAR(255) default NULL,
     `gallery_image_id` INT(11) default NULL,
+    `gallery_dimension_id` INT(11) default NULL,
     `created_at` DATETIME default NULL,
     `updated_at` DATETIME default NULL,
     PRIMARY KEY (`id`)
