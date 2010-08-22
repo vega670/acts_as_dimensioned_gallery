@@ -1,3 +1,11 @@
-<%= link_to 'Back', @gallery %><br />
 <h1><%= @image.name %></h1>
-<%= @image.tag(Image.unaltered_file) %>
+
+<% @gallery.dimensions.each do |dim| %>
+  <%= link_to @image.tag(dim.name), @image.src, { :class => 'image', :target => '_blank' } %>
+<% end %>
+<div style="clear:both;"></div>
+<div class="description">
+  <%= @image.description %><hr />
+  <%= link_to 'View ' + Image.unaltered_file.capitalize, @image.src, { :target => '_blank' } %>
+</div>
+<div class="links"><%= link_to 'Back', gallery_path(@gallery) %></div>

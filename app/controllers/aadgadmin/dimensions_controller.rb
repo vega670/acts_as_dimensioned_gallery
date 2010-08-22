@@ -3,9 +3,8 @@ class Aadgadmin::DimensionsController < Aadgadmin::AadgController
   before_filter :find_gallery
   
   def index
-    if params[:gallery_id]
-      gallery = Gallery.find(params[:gallery_id])
-      @dimensions = gallery.dimensions
+    if @gallery
+      @dimensions = @gallery.dimensions
     else
       @dimensions = Dimension.all
     end

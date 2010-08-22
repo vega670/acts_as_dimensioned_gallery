@@ -1,15 +1,44 @@
-<% @gallery.dimensions.each do |dim| %>
-  <div class="dimension">
-    Name: <%= link_to dim.name, aadgadmin_gallery_dimension_path(@gallery, dim) %><br />
-    Width: <%= dim.width %><br />
-    Height: <%= dim.height %><br />
-    Aspect: <%= dim.aspect %><br />
-    Crop: <%= dim.crop %><br />
-    Resize: <%= dim.resize %><br />
-    <%= link_to 'Edit', edit_aadgadmin_gallery_dimension_path(@gallery, dim) %> |
-    <span id="set_gallery_dimension_<%= dim.id.to_s %>"><%= link_to_remote('Set as Default Dimension', :update => 'set_gallery_dimension_' + dim.id.to_s, :url => { :controller => 'aadgadmin/dimensions', :action => :set_gallery_dimension, :id => dim.id, :gallery_id => @gallery }) %></span> |
-    <%= link_to 'Remove', aadgadmin_gallery_dimension_path(@gallery, dim), :method => :delete, :confirm => "This will remove all images of dimension #{dim.name} from this gallery. Is this what you want to do?" %>
-  </div>
+<table id="dimension_list">
+  <tr>
+    <th class="oce-first">Name</th>
+    <th>Width</th>
+    <th>Height</th>
+    <th>Aspect Ratio</th>
+    <th>Crop</th>
+    <th>Resize</th>
+    <% if !@gallery %>
+      <th>Used in Galleries</th>
+    <% end %>
+  </tr>
+<% @dimensions.each do |dim| %>
+  <tr>
+    <td class="oce-first"><%= dim.name %></td>
+    <td><%= dim.width ? dim.width : '--' %></td>
+    <td><%= dim.height ? dim.height : '--' %></td>
+    <td><%= dim.aspect ? dim.aspect : '--' %></td>
+    <td><%= dim.crop %></td>
+    <td><%= dim.resize %></td>
+    <td>
+    <% if @gallery %><span id="set_gallery_dimension_<%= dim.id.to_s %>"><%= link_to_remote('Set Default', :update => 'set_gallery_dimension_' + dim.id.to_s, :url => { :controller => 'aadgadmin/dimensions', :action => :set_gallery_dimension, :id => dim.id, :gallery_id => @gallery }) %></span>
+    <% else %>
+      <% dim.galleries.each do |gallery| %>
+        <%= link_to gallery.name, aadgadmin_dimension_gallery_path(dim, gallery) %>
+      <% end %>
+    <% end %>
+    </td>
+    <% if @gallery %>
+      <td><%= link_to 'Edit', edit_aadgadmin_gallery_dimension_path(@gallery, dim) %></td>
+      <td><%= link_to 'Remove', aadgadmin_gallery_dimension_path(@gallery, dim), :method => :delete, :confirm => "This will remove all images of dimension #{dim.name} from this gallery. Is this what you want to do?" %></td>
+    <% else %>
+      <td><%= link_to 'Edit', edit_aadgadmin_dimension_path(dim) %></td>
+      <td><%= link_to 'Remove', aadgadmin_dimension_path(dim), :method => :delete, :confirm => "This will delete the dimension, removing it from all associated galleries. Are you sure?" %></td>
+    <% end %>
+  </tr>
 <% end %>
-<div style="clear:both;"></div>
-<%= link_to 'New dimension', new_aadgadmin_gallery_dimension_path(@gallery) %>
+</table>
+<hr />
+<% if @gallery %>
+  <%= link_to 'New dimension', new_aadgadmin_gallery_dimension_path(@gallery) %>
+<% else %>
+  <%= link_to 'New dimension', new_aadgadmin_dimension_path %>
+<% end %>

@@ -1,19 +1,16 @@
 <div id="gallery">
   <h1><%= @gallery.name %></h1>
-  <h3><%= @gallery.description %></h3>
-  <br />
-  <%= link_to 'back', galleries_path %>
 
-  <h2>Images</h2>
-  <div class="images">
+  <% if @gallery_dimension %>
     <% @gallery.images.each do |image| %>
-      Name: <%= image.name %><br />
-      <% @gallery.dimensions.each do |dim| %>
-        <%= image.tag(dim.name) %>
-      <% end %>
-      <%= link_to 'Show', gallery_image_path(@gallery, image) %>
-      <br />
-
+      <%= link_to image.tag(@gallery_dimension.name), gallery_image_path(@gallery, image), :class => 'image' %>
     <% end %>
+  <% end %>
+  <div style="clear:both;"></div>
+  <div class="description">
+    <%= @gallery.description %>
+  </div>
+  <div class="links">
+    <%= link_to 'Back', holder_path %>
   </div>
 </div>

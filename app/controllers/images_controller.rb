@@ -7,6 +7,11 @@ class ImagesController < AadgController
   end
 
   def show
-    @image = @gallery.images.find(params[:id])
+    if params[:dimension_id]
+      @dimension = Dimension.find(params[:dimension_id])
+      @image = @dimension.galleries.images.find(params[:id])
+    else
+      @image = @gallery.images.find(params[:id])
+    end
   end
 end

@@ -1,23 +1,23 @@
 <div id="gallery">
-  <h1><%= @gallery.name %></h1>
-  <h3><%= @gallery.description %></h3>
-  <br />
-  <%= link_to 'back', aadgadmin_galleries_path %>
-
-  <h2>Dimensions</h2>
+  <h1>Dimensions</h1>
   <div id="dimensions">
     <%= render :partial => 'aadgadmin/dimensions/list' %>
   </div>
 
-  <h2>Images</h2>
+  <h1><%= @gallery.name %></h1>
+
   <% if @gallery_dimension %>
     <% @gallery.images.each do |image| %>
-      <div class="image">
-        <%= link_to image.tag(@gallery_dimension.name), aadgadmin_gallery_image_path(@gallery, image) %>
-      </div>
-
+      <%= link_to image.tag(@gallery_dimension.name), aadgadmin_gallery_image_path(@gallery, image), :class => 'image' %>
     <% end %>
   <% end %>
   <div style="clear:both;"></div>
-  <%= link_to 'New image', new_aadgadmin_gallery_image_path(@gallery) %>
+  <div class="description">
+    <%= @gallery.description %><hr />
+    <%= link_to 'Edit Gallery', edit_aadgadmin_gallery_path(@gallery) %> |
+    <%= link_to 'New Image', new_aadgadmin_gallery_image_path(@gallery) %>
+  </div>
+  <div class="links">
+    <%= link_to 'Back', aadgadmin_galleries_path %>
+  </div>
 </div>

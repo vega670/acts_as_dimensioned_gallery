@@ -148,14 +148,14 @@ class Image < ActiveRecord::Base
     FileUtils.mv(old_path, new_path)
   end
   
-  def tag(dim_name, options = {})
+  def tag(dim_name = Image.unaltered_file, options = {})
     gallery = Gallery.find(self.gallery_id)
     
     image_path = self.src(dim_name, gallery)
     return "<img src=\"#{image_path}\" alt=\"#{self.name}\" />"
   end
   
-  def src(dim_name, gallery = nil)
+  def src(dim_name = Image.unaltered_file, gallery = nil)
     if !gallery
       gallery = Gallery.find(self.gallery_id)
     end

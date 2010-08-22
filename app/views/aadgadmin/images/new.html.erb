@@ -14,11 +14,17 @@
 
     <%= f.label :image_file, 'File' %>
     <div class="div_texbox"><%= file_field_tag 'image[file]' %></div>
+
+    <%= f.label :description, 'Description' %>
+    <div class="div_textarea"><%= f.text_area :description, :rows => 7, :class => 'textbox' %></div>
+
     <div class="button_div"><%= f.submit 'Save', :class => 'buttons' %></div>
 
     <% end %>
   </fieldset>
 </div>
 <div id="rightSide">
-  <%= link_to 'Back', gallery_path(@gallery) %>
+  Write relevant information about the new image form here.
 </div>
+<div style="clear:both;"></div>
+<div class="links"><%= link_to 'Back', aadgadmin_gallery_path(@gallery) %></div>

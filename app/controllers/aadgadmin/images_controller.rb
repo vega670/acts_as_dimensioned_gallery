@@ -1,6 +1,7 @@
 class Aadgadmin::ImagesController < Aadgadmin::AadgController
   
   before_filter :find_gallery
+  before_filter :find_dimension
   
   def index
     @images = @gallery.images

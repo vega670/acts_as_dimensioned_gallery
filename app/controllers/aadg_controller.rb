@@ -10,20 +10,19 @@ class AadgController < ActionController::Base
     end
   end
 
-#  def find_holder
-#    strs = request.path.split('/')
-#    if strs.index('galleries') && (strs.index('galleries') != 1) && strs.index('aadgadmin') != 1 && !('dimensions' == strs[1])
-#      if strs.include? 'aadgadmin'
-#        offset = 2
-#      else
-#        offset = 1
-#      end
-#      holder_id = strs[strs.index('galleries') - offset].to_i
-#      holder_type = strs[strs.index('galleries') - offset - 1]
-#      klass = holder_type.capitalize.singularize.constantize
-#      @holder = klass.find(holder_id)
-#    end
-#  end
+
+  def render_404(exception = nil)
+    if exception
+      logger.info "Rendering 404 with exception: #{exception.message}"
+    end
+
+    respond_to do |format|
+      format.html { render :file => "#{Rails.root}/public/404.html", :status => :not_found }
+      format.xml  { head :not_found }
+      format.any  { head :not_found }
+    end
+  end
+
 
   def find_holders_url
     strs = request.path.split('/')
@@ -44,8 +43,6 @@ class AadgController < ActionController::Base
         end
         @holder_url = @holders_url.first
       end
-
-      
     end
   end
 end
