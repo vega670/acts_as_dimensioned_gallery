@@ -1,6 +1,20 @@
+<%
+  #positions = Array.new
+  #pack = ActiveRecord::Acts::DimensionedGallery::CygonRectanglePacker::Packer.new(670, 2000)
+  #pack = ActiveRecord::Acts::DimensionedGallery::CygonRectanglePacker::Packer.new(629, 2000) causes infinite loop FIX!
+  #positions << pack.TryPack(110, 510)
+  #positions << pack.TryPack(187, 110)
+  #positions << pack.TryPack(363, 160)
+  #positions << pack.TryPack(110, 110)
+  #positions << pack.TryPack(510, 410)
+  #positions << pack.TryPack(42, 42)
+  #positions.reverse!
+%>
 <h1><%= @image.name %></h1>
 
 <% @gallery.dimensions.each do |dim| %>
+  <%# point = positions.pop %>
+  <%#= link_to @image.tag(dim.name), @image.src, { :class => 'image', :target => '_blank', :style => 'position:absolute;top:' + point.Y.to_s + 'px;left:' + point.X.to_s + 'px;' } %>
   <%= link_to @image.tag(dim.name), @image.src, { :class => 'image', :target => '_blank' } %>
 <% end %>
 <div style="clear:both;"></div>
