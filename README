@@ -16,52 +16,9 @@ Usage
 
 Follow these steps to install and configure the plugin:
 
-1. Create the four required tables in your database. This is MySQL example code.
-CREATE TABLE `galleries` (
-    `id` INT(11) NOT NULL auto_increment,
-    `name` VARCHAR(255) default NULL,
-    `description` TEXT default NULL,
-    `holder_id` INT(11) default NULL,
-    `holder_type` VARCHAR(255) default NULL,
-    `gallery_image_id` INT(11) default NULL,
-    `gallery_dimension_id` INT(11) default NULL,
-    `created_at` DATETIME default NULL,
-    `updated_at` DATETIME default NULL,
-    PRIMARY KEY (`id`)
-);
+1. Run the dimensioned_gallery migration to create the needed database tables.
 
-CREATE TABLE `images` (
-    `id` INT(11) NOT NULL auto_increment,
-    `name` VARCHAR(255) default NULL,
-    `description` TEXT default NULL,
-    `original_filename` VARCHAR(255) default NULL,
-    `height` INT(11) default NULL,
-    `width` INT(11) default NULL,
-    `gallery_id` INT(11) default NULL,
-    `created_at` DATETIME default NULL,
-    `updated_at` DATETIME default NULL,
-    PRIMARY KEY (`id`)
-);
-
-CREATE TABLE `dimensions` (
-    `id` INT(11) NOT NULL auto_increment,
-    `name` VARCHAR(255) default NULL,
-    `height` INT(11) default NULL,
-    `width` INT(11) default NULL,
-    `aspect` FLOAT default NULL,
-    `crop` TINYINT(1) default NULL,
-    `resize` TINYINT(1) default NULL,
-    `created_at` DATETIME default NULL,
-    `updated_at` DATETIME default NULL,
-    PRIMARY KEY (`id`)
-);
-
-CREATE TABLE `gdjoins` (
-    `id` INT(11) NOT NULL auto_increment,
-    `gallery_id` INT(11) default NULL,
-    `dimension_id` INT(11) default NULL,
-    PRIMARY KEY (`id`)
-);
+rake db:migrate:dimensioned_gallery
 
 2. In all models you want to add galleries to, call 'acts_as_dimensioned_gallery'.
   a) When creating links in pages rendered by controllers in the plugin app, the
