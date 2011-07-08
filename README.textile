@@ -22,25 +22,25 @@ When creating links in pages rendered by controllers in the plugin app, the defa
 
 5. Add the following to the resources you would like to add galleries to in routes.rb:
 
-bc.. map.resources :your_resource do |your_resource|
-  your_resource.resources :galleries do |gallery|
-    gallery.resources :images
+bc.. resources :myresource do
+  resources :galleries do
+    resources :images
   end
 
- your_resource.namespace(:aadgadmin, :namespace => '') do |aadgadmin|
-    aadgadmin.resources :galleries do |gallery|
-      gallery.resources :dimensions
-      gallery.resources :images
+  namespace(:aadgadmin, :namespace => '') do
+    resources :galleries do
+      resources :dimensions
+      resources :images
     end
-    aadgadmin.resources :dimensions do |dimension|
-      dimension.resources :galleries
+    resources :dimensions do
+      resources :galleries
     end
   end
 end
 
-map.namespace :aadgadmin do |aadgadmin|
-  aadgadmin.resources :dimensions do |dimension|
-    dimension.resources :galleries
+namespace :aadgadmin do
+  resources :dimensions do
+    resources :galleries
   end
 end
 
@@ -63,25 +63,25 @@ h3. config/routes.rb
 
 add:
 
-bc.. map.resources :items do |item|
-  item.resources :galleries do |gallery|
-    gallery.resources :images
+bc.. resources :items do
+  resources :galleries do
+    resources :images
   end
 
-  item.namespace(:aadgadmin, :namespace => '') do |aadgadmin|
-    aadgadmin.resources :galleries do |gallery|
-      gallery.resources :dimensions
-      gallery.resources :images
+  namespace(:aadgadmin, :namespace => '') do
+    resources :galleries do
+      resources :dimensions
+      resources :images
     end
-    aadgadmin.resources :dimensions do |dimension|
-      dimension.resources :galleries
+    resources :dimensions do
+      resources :galleries
     end
   end
 end
 
-map.namespace :aadgadmin do |aadgadmin|
-  aadgadmin.resources :dimensions do |dimension|
-    dimension.resources :galleries
+namespace :aadgadmin do
+  resources :dimensions do
+    resources :galleries
   end
 end
 

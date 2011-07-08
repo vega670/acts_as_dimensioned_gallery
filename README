@@ -34,25 +34,25 @@ your Rails app.
 '/usr/bin' on Linux or something like 'C:\Program Files\ImageMagick' on Windows).
 
 5. Add the following to the resources you would like to add galleries to in routes.rb:
-  map.resources :your_resource do |your_resource|
-    your_resource.resources :galleries do |gallery|
-      gallery.resources :images
+  resources :myresource do
+    resources :galleries do
+      resources :images
     end
 
-    your_resource.namespace(:aadgadmin, :namespace => '') do |aadgadmin|
-      aadgadmin.resources :galleries do |gallery|
-        gallery.resources :dimensions
-        gallery.resources :images
+    namespace(:aadgadmin, :namespace => '') do
+      resources :galleries do
+        resources :dimensions
+        resources :images
       end
-      aadgadmin.resources :dimensions do |dimension|
-        dimension.resources :galleries
+      resources :dimensions do
+        resources :galleries
       end
     end
   end
 
-  map.namespace :aadgadmin do |aadgadmin|
-    aadgadmin.resources :dimensions do |dimension|
-      dimension.resources :galleries
+  namespace :aadgadmin do
+    resources :dimensions do
+      resources :galleries
     end
   end
 
@@ -80,25 +80,25 @@ IMAGE_MAGICK_PATH = "/usr/bin"
 ## config/routes.rb ##########
 add:
 
-map.resources :items do |item|
-  item.resources :galleries do |gallery|
-    gallery.resources :images
+resources :items do
+  resources :galleries do
+    resources :images
   end
 
-  item.namespace(:aadgadmin, :namespace => '') do |aadgadmin|
-    aadgadmin.resources :galleries do |gallery|
-      gallery.resources :dimensions
-      gallery.resources :images
+  namespace(:aadgadmin, :namespace => '') do
+    resources :galleries do
+      resources :dimensions
+      resources :images
     end
-    aadgadmin.resources :dimensions do |dimension|
-      dimension.resources :galleries
+    resources :dimensions do
+      resources :galleries
     end
   end
 end
 
-map.namespace :aadgadmin do |aadgadmin|
-  aadgadmin.resources :dimensions do |dimension|
-    dimension.resources :galleries
+namespace :aadgadmin do
+  resources :dimensions do
+    resources :galleries
   end
 end
 
