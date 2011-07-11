@@ -5,9 +5,18 @@
   <fieldset>
     <legend>Image</legend>
     <% form_for([:aadgadmin, @gallery, @image], :html => { :multipart => true } ) do |f| %>
-    <p>
-      <%= f.error_messages %>
-    </p>
+    
+    <% if @image.errors.any? %>
+    	<div id="error_explanation">
+    		<h2><%= pluralize(@image.errors.count, "error") %> prohibited this dimension from being saved:</h2>
+    		
+    		<ul>
+    		<% @image.errors.full_messages.each do |msg| %>
+    			<li><%= msg %></li>
+    		<% end %>
+    		</ul>
+    	</div>
+    <% end %>
 
     <%= f.label :name, 'Name' %>
     <div class="div_texbox"><%= f.text_field :name, :class => 'textbox' %></div>

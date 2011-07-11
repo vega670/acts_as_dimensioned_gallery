@@ -3,6 +3,8 @@ class Gallery < ActiveRecord::Base
   has_many :dimensions, :through => :gdjoins
   has_many :images, :dependent => :destroy
   belongs_to :holder, :polymorphic => true
+  
+  validates_presence_of :name
 
   def after_save
     base_path = "#{Gallery.absolute_path}/#{self.holder}/#{self.id.to_s}"

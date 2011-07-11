@@ -2,9 +2,19 @@
   <fieldset>
     <legend>Dimension</legend>
     <% form_for([@holder, :aadgadmin, @gallery, @dimension]) do |f| %>
-    <p>
-      <%= f.error_messages %>
-    </p>
+    
+    <% if @dimension.errors.any? %>
+    	<div id="error_explanation">
+    		<h2><%= pluralize(@dimension.errors.count, "error") %> prohibited this dimension from being saved:</h2>
+    		
+    		<ul>
+    		<% @dimension.errors.full_messages.each do |msg| %>
+    			<li><%= msg %></li>
+    		<% end %>
+    		</ul>
+    	</div>
+    <% end %>
+    
     <%= f.label :name, 'Dimension Name' %>
     <div class="div_texbox"><%= f.text_field :name, :class => 'textbox' %></div>
 
