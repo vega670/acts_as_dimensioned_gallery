@@ -1,7 +1,7 @@
 <div id="leftSide">
   <fieldset>
     <legend>Dimension</legend>
-    <% form_for([@holder, :aadgadmin, @gallery, @dimension]) do |f| %>
+    <%= form_for([@holder, :aadgadmin, @gallery, @dimension]) do |f| %>
     
     <% if @dimension.errors.any? %>
     	<div id="error_explanation">

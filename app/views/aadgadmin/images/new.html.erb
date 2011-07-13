@@ -4,7 +4,7 @@
 <div id="leftSide">
   <fieldset>
     <legend>Image</legend>
-    <% form_for([:aadgadmin, @gallery, @image], :html => { :multipart => true } ) do |f| %>
+    <%= form_for([:aadgadmin, @gallery, @image], :html => { :multipart => true } ) do |f| %>
     
     <% if @image.errors.any? %>
     	<div id="error_explanation">

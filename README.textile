@@ -16,11 +16,15 @@ p. 2. In all models you want to add galleries to, call @acts_as_dimensioned_gall
 
 When creating links in pages rendered by controllers in the plugin app, the default behavior is to create polymorphic routes. To disable this, include: @:automatic_polymorphic_routes => :false@ after @acts_as_dimensioned_gallery@
 
-3. Add a directory named @galleries@ in the @public@ directory of your Rails app.
+3. Run @rake dimensioned_gallery:initialize@ to create the necessary directories.
 
 4. If you have not already, install the Image Magick application ( http://www.imagemagick.org/ ). In config/environment.rb, add @IMAGE_MAGICK_PATH = "/path/to/image/magick"@ (the path will usually be @/usr/bin@ on Linux or something like @C:\Program Files\ImageMagick@ on Windows).
 
-5. Add the following to the resources you would like to add galleries to in routes.rb:
+5. If you would like to require a user to sign in before using the administrative functions,
+define @AADG_AUTHENTICATE@ as the function you would like the plugin to call before allowing
+access to administrative functions.
+
+6. Add the following to the resources you would like to add galleries to in routes.rb:
 
 bc.. resources :myresource do
   resources :galleries do
@@ -57,7 +61,8 @@ h3. config/environment.rb
 
 add:
 
-bc. IMAGE_MAGICK_PATH = "/usr/bin"
+bc.. IMAGE_MAGICK_PATH = "/usr/bin"
+AADG_AUTHENTICATE = :authenticate_user!
 
 h3. config/routes.rb
 
