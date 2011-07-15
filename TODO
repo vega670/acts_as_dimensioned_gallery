@@ -1,6 +1,4 @@
-1. Add support for more image formats.
-2. Create Rake task to initialize gallery directory.
-3. Allow user to set storage path.
-4. Include routes generator.
-5. Include migration generator.
-6. Include generators for all models, controllers, and views to avoid any name collisions.
+Add support for more image formats.
+Allow user to set storage path.
+Include routes generator.
+Include generators for all models, controllers, and views to avoid any name collisions.

@@ -8,7 +8,7 @@
 
   <% if @gallery_dimension %>
     <% @gallery.images.each do |image| %>
-      <%= link_to image.tag(@gallery_dimension.name), aadgadmin_gallery_image_path(@gallery, image), :class => 'image' %>
+      <%= link_to image.tag(@gallery_dimension.name).html_safe, aadgadmin_gallery_image_path(@gallery, image), :class => 'image' %>
     <% end %>
   <% end %>
   <div style="clear:both;"></div>

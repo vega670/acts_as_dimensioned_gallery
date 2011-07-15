@@ -24,7 +24,7 @@ class Image < ActiveRecord::Base
   def validate
     errors.add_on_empty 'name'
     
-    if !(self.file.kind_of? Tempfile)
+    if !(self.file.kind_of? ActionDispatch::Http::UploadedFile)
       errors.add_to_base 'No file selected.'
       return
     end

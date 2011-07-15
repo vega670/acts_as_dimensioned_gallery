@@ -1,6 +1,7 @@
 class Aadgadmin::AadgController < AadgController
-  layout 'aadg'
+  protect_from_forgery
   before_filter :protect_aadgadmin
+  layout 'aadg'
 
   def find_dimension
     if params[:dimension_id]

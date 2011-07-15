@@ -1,8 +1,7 @@
 class AadgController < ActionController::Base
-
-  layout 'aadg'
-
+  protect_from_forgery
   before_filter :find_holders_url
+  layout 'aadg'
 
   def find_gallery
     if params[:gallery_id]

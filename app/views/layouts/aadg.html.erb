@@ -5,6 +5,8 @@
 <head>
   <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
   <%= javascript_include_tag 'prototype' %>
+  <%= javascript_include_tag :defaults %>
+  <%= csrf_meta_tag %>
   <title>Dimensioned Gallery Admin: <%= controller.action_name %></title>
   <style type="text/css">
     body {

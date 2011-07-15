@@ -7,7 +7,7 @@
   </div>
 <% else %>
   <% @gallery.dimensions.each do |dim| %>
-    <%= link_to @image.tag(dim.name), aadgadmin_dimension_gallery_image_path(dim, @gallery, @image), :class => 'image' %>
+    <%= link_to @image.tag(dim.name).html_safe, aadgadmin_gallery_image_path(@gallery, @image), :class => 'image' %>
   <% end %>
 <% end %>
 <div style="clear:both;"></div>
@@ -17,7 +17,7 @@
   <% if !@dimension %>
     | <%= link_to 'Delete', aadgadmin_gallery_image_path(@gallery, @image), :method => :delete, :confirm => 'Are you sure?' %> |
     <span id="set_gallery_image">
-      <%= link_to_remote('Set as gallery image', :update => 'set_gallery_image', :url => { :controller => 'aadgadmin/images', :action => :set_gallery_image, :gallery_id => @gallery.id, :id => @image.id }) %><br />
+      <%= link_to 'Set as gallery image', { :controller => 'aadgadmin/images', :action => 'set_gallery_image', :gallery_id => @gallery.id, :id => @image.id }, :remote => true %><br />
     </span>
    <% end %>
 </div>

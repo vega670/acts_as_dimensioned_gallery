@@ -1,5 +1,7 @@
 h1. ActsAsDimensionedGallery
 
+h3. *NEW!* Updated for Rails 3! No longer works in Rails 2.x.
+
 p. ActsAsDimensionedGallery is a Ruby on Rails plugin allowing developers to add an image gallery to any model in an existing project. The plugin allows image dimensions to be created, edited, or destroyed at any time and will retroactively apply all dimensions to previously uploaded images as well as all new images. Dimensions can be managed as gallery-specific or independently and existing dimensions can be added to any gallery.
 
 h3. *WARNING:* ActsAsDimensionedGallery currently has very basic views and has not been extensively tested. Use with caution.
@@ -33,8 +35,12 @@ bc.. resources :myresource do
 
   namespace(:aadgadmin, :namespace => '') do
     resources :galleries do
-      resources :dimensions
-      resources :images
+      resources :dimensions do
+      	get :set_gallery_dimension, :on => :member
+      end
+      resources :images do
+      	get :set_gallery_image, :on => :member
+      end
     end
     resources :dimensions do
       resources :galleries
@@ -75,8 +81,12 @@ bc.. resources :items do
 
   namespace(:aadgadmin, :namespace => '') do
     resources :galleries do
-      resources :dimensions
-      resources :images
+      resources :dimensions do
+      	get :set_gallery_dimension, :on => :member
+      end
+      resources :images do
+      	get :set_gallery_image, :on => :member
+      end
     end
     resources :dimensions do
       resources :galleries

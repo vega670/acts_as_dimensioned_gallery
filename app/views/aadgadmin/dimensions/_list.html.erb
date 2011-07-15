@@ -19,7 +19,10 @@
     <td><%= dim.crop %></td>
     <td><%= dim.resize %></td>
     <td>
-    <% if @gallery %><span id="set_gallery_dimension_<%= dim.id.to_s %>"><%= link_to_remote('Set Default', :update => 'set_gallery_dimension_' + dim.id.to_s, :url => { :controller => 'aadgadmin/dimensions', :action => :set_gallery_dimension, :id => dim.id, :gallery_id => @gallery }) %></span>
+    <% if @gallery %>
+    	<span id="set_gallery_dimension_<%= dim.id.to_s %>">
+    		<%= link_to 'Set Default', { :controller => 'aadgadmin/dimensions', :action => 'set_gallery_dimension', :id => dim.id, :gallery_id => @gallery.id }, :remote => true %>
+    	</span>
     <% else %>
       <% dim.galleries.each do |gallery| %>
         <%= link_to gallery.name, aadgadmin_dimension_gallery_path(dim, gallery) %>
