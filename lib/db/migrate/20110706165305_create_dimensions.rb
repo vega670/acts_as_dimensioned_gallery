@@ -13,5 +13,6 @@ class CreateDimensions < ActiveRecord::Migration
   end
 
   def self.down
+    drop_table :dimensions
   end
 end

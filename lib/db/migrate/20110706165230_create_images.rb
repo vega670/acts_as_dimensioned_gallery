@@ -4,6 +4,7 @@ class CreateImages < ActiveRecord::Migration
       t.string :name
       t.text :description
       t.string :original_filename
+      t.string :extension
       t.integer :height
       t.integer :width
       t.references :gallery
@@ -13,5 +14,6 @@ class CreateImages < ActiveRecord::Migration
   end
 
   def self.down
+    drop_table :images
   end
 end

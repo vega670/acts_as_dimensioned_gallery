@@ -1,6 +1,6 @@
 class Gallery < ActiveRecord::Base
-  has_many :gdjoins
-  has_many :dimensions, :through => :gdjoins
+  has_many :gallery_dimensions
+  has_many :dimensions, :through => :gallery_dimensions
   has_many :images, :dependent => :destroy
   belongs_to :holder, :polymorphic => true
   

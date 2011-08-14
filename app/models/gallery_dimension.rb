@@ -1,4 +1,4 @@
-class Gdjoin < ActiveRecord::Base
+class GalleryDimension < ActiveRecord::Base
   belongs_to :gallery
   belongs_to :dimension
 

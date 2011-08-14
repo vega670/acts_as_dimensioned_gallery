@@ -35,8 +35,8 @@ class Image < ActiveRecord::Base
     self.width = meta_strs[1].to_i
     self.height = meta_strs[2].to_i
     
-    if !meta_strs || meta_strs[0] != 'JPEG' || self.height <= 0 || self.width <= 0
-      errors.add_to_base 'Data contains errors or is not JPEG format.'
+    if !meta_strs || !(meta_strs[0] == 'JPEG' || meta_strs[0] == 'PNG') || self.height <= 0 || self.width <= 0
+      errors.add_to_base 'Data contains errors or is not a supported format.'
     end
   end
   

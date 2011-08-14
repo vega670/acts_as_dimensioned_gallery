@@ -1,6 +1,6 @@
 class Dimension < ActiveRecord::Base
-  has_many :gdjoins
-  has_many :galleries, :through => :gdjoins
+  has_many :gallery_dimensions
+  has_many :galleries, :through => :gallery_dimensions
   
   validates_uniqueness_of :name, :case_sensitive => false, :message => "belongs to another dimension."
   
@@ -32,18 +32,18 @@ class Dimension < ActiveRecord::Base
 
   def before_update
     dimension = Dimension.find(self.id)
-    gdjoins = Gdjoin.find(:all, :conditions => "dimension_id = #{self.id}")
+    gallery_dimensions = GalleryDimension.find(:all, :conditions => "dimension_id = #{self.id}")
     if (dimension.width != self.width) || (dimension.height != self.height) || (dimension.aspect != self.aspect) || (dimension.resize != self.resize) || (dimension.crop != self.crop)
-      gdjoins.each do |gdjoin|
-        gallery = Gallery.find(gdjoin.gallery_id)
+      gallery_dimensions.each do |gallery_dimension|
+        gallery = Gallery.find(gallery_dimension.gallery_id)
         gallery.images.each do |image|
           image.destroy_with_dimension(dimension)
           image.create_with_dimension(self)
         end
       end
     elsif (dimension.name != self.name)
-      gdjoins.each do |gdjoin|
-        gallery = Gallery.find(gdjoin.gallery_id)
+      gallery_dimensions.each do |gallery_dimension|
+        gallery = Gallery.find(gallery_dimension.gallery_id)
         gallery.images.each do |image|
           image.rename_with_dimension(dimension, self)
         end

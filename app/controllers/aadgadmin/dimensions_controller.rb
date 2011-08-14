@@ -102,9 +102,9 @@ class Aadgadmin::DimensionsController < Aadgadmin::AadgController
       end
 
     else
-      gdjoins = Gdjoin.find(:all, :conditions => "dimension_id = #{dimension.id}")
-      gdjoins.each do |gd|
-        gd.destroy
+      gallery_dimensions = Gdjoin.find(:all, :conditions => "dimension_id = #{dimension.id}")
+      gallery_dimensions.each do |gallery_dimension|
+        gallery_dimension.destroy
       end
 
       dimension.destroy

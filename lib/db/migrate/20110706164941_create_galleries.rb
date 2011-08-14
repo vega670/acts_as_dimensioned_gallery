@@ -12,5 +12,6 @@ class CreateGalleries < ActiveRecord::Migration
   end
 
   def self.down
+    drop_table :galleries
   end
 end
