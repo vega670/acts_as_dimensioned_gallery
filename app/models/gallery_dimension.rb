@@ -1,8 +1,11 @@
 class GalleryDimension < ActiveRecord::Base
   belongs_to :gallery
   belongs_to :dimension
+  
+  after_save :create_images
+  after_destroy :delete_images
 
-  def after_save
+  def create_images
     gallery = Gallery.find(self.gallery_id)
     dimension = Dimension.find(self.dimension_id)
 
@@ -11,7 +14,7 @@ class GalleryDimension < ActiveRecord::Base
     end
   end
 
-  def after_destroy
+  def delete_images
     gallery = Gallery.find(self.gallery_id)
     dimension = Dimension.find(self.dimension_id)
 

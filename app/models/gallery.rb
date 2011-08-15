@@ -5,13 +5,16 @@ class Gallery < ActiveRecord::Base
   belongs_to :holder, :polymorphic => true
   
   validates_presence_of :name
+  
+  after_save :create_directory
+  after_destroy :delete_directory
 
-  def after_save
+  def create_directory
     base_path = "#{Gallery.absolute_path}/#{self.holder}/#{self.id.to_s}"
     FileUtils.mkdir_p(base_path)
   end
 
-  def after_destroy
+  def delete_directory
     base_path = "#{Gallery.absolute_path}/#{self.holder}/#{self.id.to_s}"
     FileUtils.remove_entry_secure(base_path)
   end

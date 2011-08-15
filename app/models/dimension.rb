@@ -8,7 +8,11 @@ class Dimension < ActiveRecord::Base
   
   validates_presence_of :name
   
-  def validate
+  validate :check_dimension_constraints
+  
+  before_update :update_dependents
+  
+  def check_dimension_constraints
     if (self.name.downcase <=> Image.unaltered_file) == 0
       errors.add_to_base "Cannot create dimension named #{Image.unaltered_file.capitalize}. That is a reserved name."
     end
@@ -30,7 +34,7 @@ class Dimension < ActiveRecord::Base
     end
   end
 
-  def before_update
+  def update_dependents
     dimension = Dimension.find(self.id)
     gallery_dimensions = GalleryDimension.find(:all, :conditions => "dimension_id = #{self.id}")
     if (dimension.width != self.width) || (dimension.height != self.height) || (dimension.aspect != self.aspect) || (dimension.resize != self.resize) || (dimension.crop != self.crop)

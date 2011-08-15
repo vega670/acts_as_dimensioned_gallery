@@ -5,14 +5,18 @@ class Image < ActiveRecord::Base
   OpenURI::Buffer::StringMax = 0
   
   belongs_to :gallery
+  
+  after_save :create_dimensioned
+  after_destroy :delete_image
+  
+  validate :check_format
+  
 
-  #TODO: replace global with class var
   def file= (f)
     self.original_filename = f.original_filename
     @file = f
   end
 
-  #TODO: replace global with class var
   def file
     return @file
   end
@@ -21,7 +25,7 @@ class Image < ActiveRecord::Base
     return 'original'
   end
 
-  def validate
+  def check_format
     errors.add_on_empty 'name'
     
     if !(self.file.kind_of? ActionDispatch::Http::UploadedFile)
@@ -40,7 +44,7 @@ class Image < ActiveRecord::Base
     end
   end
   
-  def after_save
+  def create_dimensioned
     gallery = Gallery.find(self.gallery_id)
     temp_path = self.file.path
     base_path = "#{Gallery.absolute_path}/#{gallery.holder}/#{gallery.id.to_s}/#{self.id.to_s}"
@@ -57,7 +61,7 @@ class Image < ActiveRecord::Base
     end
   end
   
-  def after_destroy
+  def delete_image
     base_path = "#{Gallery.absolute_path}/#{gallery.holder}/#{gallery.id.to_s}/#{self.id.to_s}"
     FileUtils.remove_entry_secure(base_path)
   end
