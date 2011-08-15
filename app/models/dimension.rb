@@ -14,23 +14,23 @@ class Dimension < ActiveRecord::Base
   
   def check_dimension_constraints
     if (self.name.downcase <=> Image.unaltered_file) == 0
-      errors.add_to_base "Cannot create dimension named #{Image.unaltered_file.capitalize}. That is a reserved name."
+      errors.add :base, "Cannot create dimension named #{Image.unaltered_file.capitalize}. That is a reserved name."
     end
 
     if ((self.height) ? self.height < 1 : false) || ((self.width) ? self.width < 1 : false)
-      errors.add_to_base "Smallest acceptable dimension is 1x1 pixels."
+      errors.add :base, "Smallest acceptable dimension is 1x1 pixels."
     end
 
     if (self.aspect) ? self.aspect <= 0 : false
-      errors.add_to_base "Aspect ratios must be greater than 0."
+      errors.add :base, "Aspect ratios must be greater than 0."
     end
 
     if !self.resize && !self.crop
-      errors.add_to_base "Resize and/or Crop must be selected."
+      errors.add :base, "Resize and/or Crop must be selected."
     end
 
     if !self.aspect && !self.width && !self.height
-      errors.add_to_base "Dimensions must have at least one of the following: Width, Height, Aspect ratio."
+      errors.add :base, "Dimensions must have at least one of the following: Width, Height, Aspect ratio."
     end
   end
 

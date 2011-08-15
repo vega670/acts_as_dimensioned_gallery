@@ -29,7 +29,7 @@ class Image < ActiveRecord::Base
     errors.add_on_empty 'name'
     
     if !(self.file.kind_of? ActionDispatch::Http::UploadedFile)
-      errors.add_to_base 'No file selected.'
+      errors.add :base, 'No file selected.'
       return
     end
     
@@ -40,7 +40,7 @@ class Image < ActiveRecord::Base
     self.height = meta_strs[2].to_i
     
     if !meta_strs || !(meta_strs[0] == 'JPEG' || meta_strs[0] == 'PNG') || self.height <= 0 || self.width <= 0
-      errors.add_to_base 'Data contains errors or is not a supported format.'
+      errors.add :base, 'Data contains errors or is not a supported format.'
     end
   end
   
