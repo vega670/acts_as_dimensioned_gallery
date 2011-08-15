@@ -28,10 +28,10 @@ class Aadgadmin::DimensionsController < Aadgadmin::AadgController
     if @gallery
       if params[:dimension][:id]
         @dimension = Dimension.find(params[:dimension][:id])
-        gdjoin = Gdjoin.find(:all, :conditions => "gallery_id = #{@gallery.id} AND dimension_id = #{@dimension.id}")
+        gallery_dimension = GalleryDimension.find(:all, :conditions => "gallery_id = #{@gallery.id} AND dimension_id = #{@dimension.id}")
 
         respond_to do |format|
-          if gdjoin.length == 0
+          if gallery_dimension.length == 0
             @gallery.dimensions << @dimension
             flash[:notice] = "Dimension added."
           else
@@ -96,13 +96,13 @@ class Aadgadmin::DimensionsController < Aadgadmin::AadgController
     dimension = Dimension.find(params[:id])
 
     if @gallery
-      gdjoin = Gdjoin.find(:all, :conditions => "gallery_id = #{@gallery.id} AND dimension_id = #{dimension.id}")
-      if gdjoin.length > 0
-        gdjoin.first.destroy
+      gallery_dimension = GalleryDimension.find(:all, :conditions => "gallery_id = #{@gallery.id} AND dimension_id = #{dimension.id}")
+      if gallery_dimension.length > 0
+        gallery_dimension.first.destroy
       end
 
     else
-      gallery_dimensions = Gdjoin.find(:all, :conditions => "dimension_id = #{dimension.id}")
+      gallery_dimensions = GalleryDimension.find(:all, :conditions => "dimension_id = #{dimension.id}")
       gallery_dimensions.each do |gallery_dimension|
         gallery_dimension.destroy
       end
