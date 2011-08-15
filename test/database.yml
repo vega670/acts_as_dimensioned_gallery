@@ -1,0 +1,7 @@
+sqlite:
+	:adapter: sqlite
+	:dbfile: vendor/plugins/acts_as_dimensioned_gallery/test/aadg_plugin.sqlite
+	
+sqlite3:
+	:adapter: sqlite3
+	:dbfile: vendor/plugins/acts_as_dimensioned_gallery/test/aadg_plugin.sqlite3

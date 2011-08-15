@@ -1,4 +1,5 @@
-db/*.sqlite3
+.sqlite3
+.sqlite
 .svn
 .settings
 .project
@@ -7,5 +8,3 @@ nbproject
 *.cache
 *.log
 *.pid
-database.yml
-test
