@@ -6,8 +6,8 @@ class Image < ActiveRecord::Base
   
   belongs_to :gallery
   
-  after_save :create_dimensioned
-  after_destroy :delete_image
+  after_save :create_all_dimensioned
+  after_destroy :delete_image_dir
   
   validate :check_format
   
@@ -36,22 +36,29 @@ class Image < ActiveRecord::Base
     meta = `#{IMAGE_MAGICK_PATH}/identify -format %m,%w,%h #{self.file.path} 2>&1`
     meta_strs = meta.split(',')
     
-    self.width = meta_strs[1].to_i
-    self.height = meta_strs[2].to_i
+    width = meta_strs[1].to_i
+    height = meta_strs[2].to_i
+    extension = meta_strs[0]
     
-    if !meta_strs || !(meta_strs[0] == 'JPEG' || meta_strs[0] == 'PNG') || self.height <= 0 || self.width <= 0
+    if !meta_strs || !(extension == 'JPEG' || extension == 'PNG') || height <= 0 || width <= 0
+      puts "HERE!!!!!!!!!!!!!!!!!!!!\n" + extension
       errors.add :base, 'Data contains errors or is not a supported format.'
+      return
     end
+    
+    self.width = width
+    self.height = height
+    self.extension = extension.downcase
   end
   
-  def create_dimensioned
+  def create_all_dimensioned
     gallery = Gallery.find(self.gallery_id)
     temp_path = self.file.path
     base_path = "#{Gallery.absolute_path}/#{gallery.holder}/#{gallery.id.to_s}/#{self.id.to_s}"
     FileUtils.mkdir_p(base_path)
     
     # keep original copy
-    original_path = "#{base_path}/#{Image.unaltered_file}.jpg"
+    original_path = "#{base_path}/#{Image.unaltered_file}.#{self.extension}"
     FileUtils.cp(temp_path, original_path)
     
     dims = gallery.dimensions
@@ -61,7 +68,7 @@ class Image < ActiveRecord::Base
     end
   end
   
-  def delete_image
+  def delete_image_dir
     base_path = "#{Gallery.absolute_path}/#{gallery.holder}/#{gallery.id.to_s}/#{self.id.to_s}"
     FileUtils.remove_entry_secure(base_path)
   end
@@ -71,9 +78,9 @@ class Image < ActiveRecord::Base
     
     base_path = "#{Gallery.absolute_path}/#{gallery.holder}/#{gallery.id.to_s}/#{self.id.to_s}"
     dim_name = dimension.name.gsub(/[\s]/,"_").gsub(/[\W]/,"").downcase
-    dest_path = "#{base_path}/#{dim_name}.jpg"
+    dest_path = "#{base_path}/#{dim_name}.#{self.extension}"
     
-    src_path = "#{base_path}/#{Image.unaltered_file}.jpg"
+    src_path = "#{base_path}/#{Image.unaltered_file}.#{self.extension}"
     
     FileUtils.cp(src_path, dest_path)
     
@@ -135,7 +142,7 @@ class Image < ActiveRecord::Base
     
     base_path = "#{Gallery.absolute_path}/#{gallery.holder}/#{gallery.id.to_s}/#{self.id.to_s}"
     dim_name = dimension.name.gsub(/[\s]/,"_").gsub(/[\W]/,"").downcase
-    dest_path = "#{base_path}/#{dim_name}.jpg"
+    dest_path = "#{base_path}/#{dim_name}.#{self.extension}"
     
     FileUtils.rm(dest_path)
   end
@@ -146,8 +153,8 @@ class Image < ActiveRecord::Base
     base_path = "#{Gallery.absolute_path}/#{gallery.holder}/#{gallery.id.to_s}/#{self.id.to_s}"
     old_name = old.name.gsub(/[\s]/,"_").gsub(/[\W]/,"").downcase
     new_name = new.name.gsub(/[\s]/,"_").gsub(/[\W]/,"").downcase
-    old_path = "#{base_path}/#{old_name}.jpg"
-    new_path = "#{base_path}/#{new_name}.jpg"
+    old_path = "#{base_path}/#{old_name}.#{self.extension}"
+    new_path = "#{base_path}/#{new_name}.#{self.extension}"
 
     FileUtils.mv(old_path, new_path)
   end
@@ -169,7 +176,7 @@ class Image < ActiveRecord::Base
     else
       image_name = dim_name.gsub(/[\s]/,"_").gsub(/[\W]/,"").downcase
     end
-    return "#{Gallery.relative_path}/#{gallery.holder}/#{gallery.id.to_s}/#{self.id.to_s}/#{image_name}.jpg"
+    return "#{Gallery.relative_path}/#{gallery.holder}/#{gallery.id.to_s}/#{self.id.to_s}/#{image_name}.#{self.extension}"
   end
 
 
